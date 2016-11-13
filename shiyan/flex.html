@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex</title>
+    <style>
+        body{
+            margin:0;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-content: center;
+        }
+        div{
+            padding:20px;
+            display: inline-block;
+            border: 1px solid #f00;
+            background: #999;
+            width: 150px;
+        }
+        div:nth-of-type(1){
+            height: 120px;
+        }
+        div:nth-of-type(2){
+            height: 100px;
+        }
+        div:nth-of-type(3){
+            height: 40px;
+        }
+        div:nth-of-type(4){
+            height: 200px;
+        }
+        @media screen and (max-width:768px ) {
+            body{
+                align-content: flex-start;
+            }
+           div:nth-of-type(4){
+               order: -1;
+           }
+        }
+    </style>
+</head>
+<body>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 12px;
+            font-family: "微软雅黑";
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #222;
+        }
+        img{
+            box-sizing: border-box;
+        }
+        .pp{
+            font-size: 14px;
+        }
+        .clearFix:after{
+            content: "";
+            font-size: 0;
+            height: 0;
+            display: block;
+            clear: both;
+        }
+        .container {
+            width: 504px;
+            padding: 20px 0 20px 20px;
+            background: #fff;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .left {
+            width: 254px;
+            float: left;
+        }
+
+        .left ul {
+            border-right: 1px solid rgb(233, 233, 233);
+        }
+
+        .left li {
+            display: inline-block;
+            margin: 10px 16px 0 0;
+            width: 64px;
+            text-align: center;
+            position: relative;
+        }
+        .left li:before{
+            display: none;
+            content: "LIVE";
+            font-size: 15px;
+            font-weight: 700;
+            position: absolute;
+            width:64px;
+            line-height: 64px;
+            top:0;
+            left:0;
+            background: rgba(0,0,0,.4);
+            color:#fff;
+            border-radius: 50%;
+            animation: ani .3s linear;
+            text-indent: 15px;
+        }
+        .left li:after{
+            display: none;
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #baff3b;
+            top: 26px;
+            left: 8px;
+            animation: ani .3s linear;
+        }
+        .left li:hover:before,.left li:hover:after{
+            display: block;
+        }
+        @-webkit-keyframes ani {
+            0%{
+                opacity: 0;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+            100%{
+                opacity: 1;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+        @keyframes ani {
+            0%{
+                opacity: 0;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+            100%{
+                opacity: 1;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        .left img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+        }
+
+        .left span {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .right {
+            float: left;
+            width: 250px;
+        }
+
+        .right p {
+            padding-left: 20px;
+        }
+        .right li:hover{
+            background: rgba(0,0,0,.1);
+        }
+
+        .right li img{
+            margin:10px 20px 0;
+            width: 208px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+<div class="container clearFix">
+    <div class="left">
+        <p class="pp">热门直播:</p>
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="http://i1.hdslb.com/bfs/face/30b16bd68390ec7efca1dd5e50d72b7a2358c5cc.jpg">
+                    <span>黑灵是哥哥</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://i0.hdslb.com/bfs/face/eefa806907987e3f6305da69f43adb922b666346.jpg">
+                    <span>mieko禅心</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://i1.hdslb.com/bfs/face/b7bb76a078d011033faf1c8ecd3b41ad30b8a9be.jpg">
+                    <span>吸管君and熊猫酱</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://i0.hdslb.com/bfs/face/9c7f133022a1532a0f0a3ab164f40593f23f7a4c.jpg">
+                    <span>陈哥1</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://i0.hdslb.com/bfs/face/7652b718a13eff0bc7f4ecb347c507263f9dd926.jpg">
+                    <span>小天不是受QAQ</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://static.hdslb.com/images/member/noface.gif">
+                    <span>奶老板儿</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right">
+        <p class="pp">热门活动:</p>
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="http://i0.hdslb.com/bfs/live/c5c9cc6796008fc351b607a1db69abbfe25fdfb9.jpg">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://i0.hdslb.com/bfs/live/ac38d375d6ff2e58fb02051dc70316cbf06392e1.jpg">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            overflow: hidden;
+            height: 100vh;
+            perspective: 20em;
+            background: #269be7;
+        }
+
+        div {
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+
+        .assembly {
+            top: 50%;
+            left: 50%;
+            animation: r 16.8s ease-in-out infinite;
+        }
+
+        @keyframes r {
+            25% {
+                transform: rotate(90deg) rotateY(90deg);
+            }
+            50% {
+                transform: rotate(180deg) rotateY(180deg);
+            }
+            75% {
+                transform: rotate(270deg) rotateY(270deg);
+            }
+            100% {
+                transform: rotate(360deg) rotateY(360deg);
+            }
+        }
+        .off {
+            animation: a 4.2s ease-in-out infinite;
+        }
+
+        @keyframes a {
+            0%, 2% {
+                transform: none;
+            }
+            50% {
+                transform: scaleY(2.5) translateY(-2.32031em);
+            }
+            98%, 100% {
+                transform: scaleY(1) translateY(-4.64063em);
+            }
+        }
+        .tile {
+            animation: inherit;
+        }
+        .tile:nth-child(1) {
+            animation-name: a1;
+        }
+        @keyframes a1 {
+            0%, 2% {
+                transform: translateY(3.09375em);
+            }
+            44%, 100% {
+                transform: translateY(7.73438em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(2) {
+            animation-name: a2;
+        }
+        @keyframes a2 {
+            0%, 6% {
+                transform: translateY(2.53125em);
+            }
+            48%, 100% {
+                transform: translateY(7.17188em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(3) {
+            animation-name: a3;
+        }
+        @keyframes a3 {
+            0%, 10% {
+                transform: translateY(1.96875em);
+            }
+            52%, 100% {
+                transform: translateY(6.60938em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(4) {
+            animation-name: a4;
+        }
+        @keyframes a4 {
+            0%, 14% {
+                transform: translateY(1.40625em);
+            }
+            56%, 100% {
+                transform: translateY(6.04688em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(5) {
+            animation-name: a5;
+        }
+        @keyframes a5 {
+            0%, 18% {
+                transform: translateY(0.84375em);
+            }
+            60%, 100% {
+                transform: translateY(5.48438em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(6) {
+            animation-name: a6;
+        }
+        @keyframes a6 {
+            0%, 22% {
+                transform: translateY(0.28125em);
+            }
+            64%, 100% {
+                transform: translateY(4.92188em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(7) {
+            animation-name: a7;
+        }
+        @keyframes a7 {
+            0%, 26% {
+                transform: translateY(-0.28125em);
+            }
+            68%, 100% {
+                transform: translateY(4.35938em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(8) {
+            animation-name: a8;
+        }
+        @keyframes a8 {
+            0%, 30% {
+                transform: translateY(-0.84375em);
+            }
+            72%, 100% {
+                transform: translateY(3.79688em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(9) {
+            animation-name: a9;
+        }
+        @keyframes a9 {
+            0%, 34% {
+                transform: translateY(-1.40625em);
+            }
+            76%, 100% {
+                transform: translateY(3.23438em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(10) {
+            animation-name: a10;
+        }
+        @keyframes a10 {
+            0%, 38% {
+                transform: translateY(-1.96875em);
+            }
+            80%, 100% {
+                transform: translateY(2.67188em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(11) {
+            animation-name: a11;
+        }
+        @keyframes a11 {
+            0%, 42% {
+                transform: translateY(-2.53125em);
+            }
+            84%, 100% {
+                transform: translateY(2.10938em) rotateY(0.5turn);
+            }
+        }
+        .tile:nth-child(12) {
+            animation-name: a12;
+        }
+        @keyframes a12 {
+            0%, 46% {
+                transform: translateY(-3.09375em);
+            }
+            88%, 100% {
+                transform: translateY(1.54688em) rotateY(0.5turn);
+            }
+        }
+        .tile__face {
+            margin: -0.28125em -3.375em;
+            width: 6.75em;
+            height: 0.5625em;
+            backface-visibility: hidden;
+            background: currentColor;
+            color: #fff;
+        }
+        .tile__face:nth-child(-n + 4):nth-child(odd) {
+            color: #0174cb;
+        }
+        .tile__face:nth-child(n + 5) {
+            margin-top: -3.375em;
+            height: 6.75em;
+        }
+        .tile__face:nth-child(1) {
+            transform: rotateY(0deg) translateZ(3.375em);
+        }
+        .tile__face:nth-child(2) {
+            transform: rotateY(90deg) translateZ(3.375em);
+        }
+        .tile__face:nth-child(3) {
+            transform: rotateY(180deg) translateZ(3.375em);
+        }
+        .tile__face:nth-child(4) {
+            transform: rotateY(270deg) translateZ(3.375em);
+        }
+        .tile__face:nth-child(5) {
+            transform: rotateX(90deg) translateZ(0.28125em);
+        }
+        .tile__face:nth-child(6) {
+            transform: rotateX(-90deg) translateZ(0.28125em);
+        }
+    </style>
+</head>
+<body>
+<div class='assembly'>
+    <div class='off'>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+        <div class='tile'>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+            <div class='tile__face'></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

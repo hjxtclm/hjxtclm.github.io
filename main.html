@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_blank">
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <style>
+        div {
+            width: 60%;
+            margin: 100px auto 0;
+        }
+
+        .first {
+            border: 1px solid #ccc;
+            padding: 20px 30px 20px 50px;
+            margin: 0 auto;
+            width: 50%;
+            box-shadow: 0 0 10px #20090a;
+            font-size: 1.5em;
+            border-radius: 10px;
+        }
+
+        .second {
+            font-size: 1em;
+            padding-left: 5px;
+            height: 0;
+            overflow: hidden;
+            list-style-type: none;
+        }
+
+        a {
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            font-weight: bolder;
+            color: #337ab7;
+            font-family: "微软雅黑";
+            transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+        }
+
+        li {
+            border-bottom: 1px solid rgba(0, 0, 0, .3);
+            width: 390px;
+        }
+
+        a:hover {
+            background-color: #337ab7;
+            color: #fff;
+            padding-left: 50px;
+            border-radius: 5px;
+        }
+        .on{
+        }
+        .on ol{
+            height: auto;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var first = document.getElementById("first");
+            var firstLi = getByClass(first,"firstLi");
+            for(var i=0;i<firstLi.length;i++) {
+                firstLi[i].addEventListener("click", function (e) {
+                    this.flag=this.className=="firstLi";
+                    for(var j=0;j<firstLi.length;j++){
+                        firstLi[j].className="firstLi";
+                    }
+                    if(this.flag){
+                        this.className+=" on"
+                    }
+                }, false)
+            }
+        };
+        function getByClass(parent,cls){
+            var child = parent.getElementsByTagName("*");
+            var s=[];
+            for(var i=0;i<child.length;i++){
+                if(child[i].className.match(cls)){
+                    s.push(child[i])
+                }
+            }
+            return s;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <ol class="first" id="first">
+        <li class="firstLi"><a>常用特效</a>
+            <ol class="second">
+                <li><a href="pictrue/pictrue.html">图片随鼠标移动</a></li>
+                <li><a href="JD/JD.html">京东下拉菜单</a></li>
+                <li><a href="shiyan/taobao.html">淘宝轮播图</a></li>
+                <li><a href="shiyan/tab.html">Tab切换及水波纹点击效果</a></li>
+                <li><a href="shiyan/scroll.html">信息条滚动展示</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>js</a>
+            <ol class="second">
+                <li><a href="shiyan/zhuzhuangtu.html">柱状图</a></li>
+                <li><a href="shiyan/duilie.html">排序及数据处理</a></li>
+                <li><a href="shiyan/imgwall.html">照片墙</a></li>
+                <li><a href="css3/objec-fit.html">时钟</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>瀑布流</a>
+            <ol class="second">
+                <li><a href="pubuliu/waterfall.html">js瀑布流</a></li>
+                <li><a href="pubuliu/wJq.html">jQuery分散瀑布流</a></li>
+                <li><a href="pubuliu/flexwater.html">css3瀑布流</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>网页布局</a>
+            <ol class="second">
+                <li><a href="fuzabuju/fuzabuju.html">常见布局</a></li>
+                <li><a href="bzhan/bilibili.html">哔哩哔哩</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>其他</a>
+            <ol class="second">
+                <li><a href="shiyan/dsd.html">立体小方块(不兼容ie)</a></li>
+                <li><a href="shiyan/xuanzhuanmuma.html">旋转图片(不兼容ie)</a></li>
+                <li><a href="css3/yuan.html">圆</a></li>
+                <li><a href="css3/shaizi.html">flex骰子</a></li>
+                <li><a href="shiyan/ball.html">canvas模拟小球降落</a></li>
+            </ol>
+        </li>
+    </ol>
+</div>
+</body>
+</html>

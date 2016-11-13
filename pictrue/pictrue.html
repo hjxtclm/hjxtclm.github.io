@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片随鼠标移动</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: inline-block;
+            vertical-align: top;
+            letter-spacing: normal;
+        }
+
+        ul {
+            white-space: nowrap;
+            /* 通过设置定位，使用left切换图片*/
+            position: relative;
+            left: 0;
+            /* 设置字间距为-4，消除因为空格或换行导致的间距*/
+            letter-spacing: -8px;
+        }
+
+        div {
+            width: 720px;
+            height: 455px;
+            overflow: hidden;
+            margin: 75px auto 0;
+            box-shadow: 1px 1px 5px #ccc;
+            border-radius: 5px;
+        }
+
+        .two > li {
+            width: 125px;
+            height: 8px;
+            background-color: #337ab7;
+            border-right: 1px solid #fff;
+        }
+        .two{
+            background: rgba(51,122,183,.5);
+        }
+
+        .tuoming {
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+        }
+
+        img {
+            width: 720px;
+            height: 446px;
+            vertical-align: top;
+        }
+    </style>
+    <script src="../move.js"></script>
+    <script>
+        window.onload = function () {
+            var two = document.getElementsByClassName("two")[0],//1
+                    twoLi = two.getElementsByTagName("li");//2
+            var oneUl = document.getElementsByClassName("one")[0],
+                    oneLi = oneUl.getElementsByTagName("li");
+            var node = oneLi[0].cloneNode(true);
+            oneUl.appendChild(node);
+            var timer;
+
+            function startmove(num) {
+                if (num == 5) {
+                    moveJs(oneUl, {left: -720 * num},
+                            moveJs(twoLi[0], {width: 216, opacity: 100},
+                                    moveJs(twoLi[4], {width: 125, opacity: 50})))
+                } else if (num > 5 || num != 0) {
+                    if (num > 5) {
+                        num = 1;
+                        oneUl.style.left = 0;
+                    }
+                    moveJs(oneUl, {left: -720 * num},
+                            moveJs(twoLi[num], {width: 216, opacity: 100},
+                                    moveJs(twoLi[num - 1], {width: 125, opacity: 50})
+                            )
+                    );
+                }
+                timer = setTimeout(function () {
+                    startmove(num + 1);
+                }, 3000);
+            }
+
+            startmove(0);
+            for (var i = 0, l = twoLi.length; i < l; i++) {
+                !function (x) {
+                    var pLength = x * 720;
+                    twoLi[i].onmouseover = function () {
+                        clearTimeout(timer);
+                        var that = this;
+                        for (var j = 0; j < l; j++) {
+                            moveJs(twoLi[j], {width: 125, opacity: 50});
+                        }
+                        moveJs(this, {width: 216, opacity: 100});
+                        moveJs(oneUl, {left: -pLength});
+                        that.onmouseout = function () {
+                            that.onmouseout = null;
+                            setTimeout(startmove(x), 3000)
+                        }
+                    }
+                }(i)
+            }
+        }
+    </script>
+</head>
+<body>
+<div>
+    <ul class="one">
+        <li><a><img src="http://img1.dwstatic.com/lol/1610/340544816588/1476589621530.jpg"></a></li>
+        <li><a><img src="http://img4.dwstatic.com/lol/1610/340544816588/1476589738975.jpg"></a></li>
+        <li><a><img src="http://img3.dwstatic.com/lol/1610/340220001155/1476264803966.jpg"></a></li>
+        <li><a><img src="http://img2.dwstatic.com/lol/1610/340353392996/1476398196022.jpg"></a></li>
+        <li><a><img src="http://img1.dwstatic.com/lol/1610/340364979905/1476409783692.jpg"></a></li>
+    </ul>
+    <ul class="two">
+        <li style="width:216px;opacity:1;filter:alpha(opacity=100)"></li>
+        <li class="tuoming"></li>
+        <li class="tuoming"></li>
+        <li class="tuoming"></li>
+        <li class="tuoming"></li>
+    </ul>
+</div>
+</body>
+</html>

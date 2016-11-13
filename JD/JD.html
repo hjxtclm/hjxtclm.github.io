@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>京东列表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 250px;
+            border: 2px solid red;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .firstUl {
+            line-height: 2em;
+        }
+
+        .firstLi {
+            padding-left: 15px;
+            background-image: url("http://img.mukewang.com/5411027300014f0200220030.jpg");
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+            font-size: 0.9em;
+        }
+
+        #title {
+            padding: 10px 0 10px 15px;
+            font-size: 0.65em;
+            background-color: red;
+            color: #fff;
+        }
+
+        .firstLi:hover {
+            height: 65px;
+            box-shadow: 0 0 5px #2fb4bb;
+            border-left: 5px red solid;
+            border-radius: 2px;
+            background-image: none;
+        }
+
+        .firstLi:hover .sub {
+            display: block;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: red;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .sub {
+            position: absolute;
+            width: 55%;
+            margin-top: -33px;
+            margin-left: 225px;
+            box-shadow: 0 0 10px #2fb4bb;
+            background-color: #ffffff;
+            z-index: 1;
+            display: none;
+        }
+
+        .leftDiv {
+            width: 72%;
+        }
+
+        .rightDiv {
+            width: 28%;
+        }
+
+        .lAr {
+            display: inline-block;
+            float: left;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .innerTitle > a {
+            text-decoration: underline;
+            color: red;
+            padding-right: 10px;
+        }
+
+        .innerTitle {
+            text-align: right;
+            float: left;
+            width: 15%;
+        }
+
+        .secondUl {
+            float: left;
+            width: 85%;
+        }
+
+        .secondUl > li {
+            float: left;
+        }
+
+        .secondUl > li > a {
+            border-left: 1px solid #cccccc;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .clearfix:after {
+            content: "";
+            height: 0;
+            display: block;
+            clear: both;
+        }
+
+        .innerC {
+            border-bottom: dashed 1px #2fb4bb;
+            line-height: 22px;
+            font-size: 0.9em;
+            margin: 0 10px;
+            padding: 5px 0;
+        }
+
+        .firstLi:hover span {
+            display: inline-block;
+            position: relative;
+            float: right;
+            width: 30px;
+            height: 65px;
+            background: #ffffff;
+            z-index: 2;
+        }
+
+        #b {
+            font-size: 0.8em;
+            display: none;
+        }
+
+        #b a {
+            padding: 0 5px;
+        }
+
+        .firstLi:hover #b {
+            display: block;
+        }
+
+        #img1 {
+            position: absolute;
+            margin-left: 30px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="title">
+        <h1>全部商品分类</h1>
+    </div>
+    <ul class="firstUl">
+        <li class="firstLi"><a href="#">图书、音像、数字商品</a><span></span>
+            <div class="sub clearfix">
+                <div class="leftDiv lAr">
+                    <div class="innerC clearfix">
+                        <div class="innerTitle "><a>电子书</a></div>
+                        <ul class="secondUl">
+                            <li><a>免费</a></li>
+                            <li><a>小说</a></li>
+                            <li><a>励志与成功</a></li>
+                            <li><a>婚恋/两性</a></li>
+                            <li><a>文学</a></li>
+                            <li><a>经管</a></li>
+                            <li><a>畅读VIP</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC  clearfix">
+                        <div class="innerTitle"><a>数字音乐</a></div>
+                        <ul class="secondUl">
+                            <li><a>通俗流行</a></li>
+                            <li><a>古典音乐</a></li>
+                            <li><a>摇滚说唱</a></li>
+                            <li><a>爵士蓝调</a></li>
+                            <li><a>乡村民谣</a></li>
+                            <li><a>有声读物</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>音像</a></div>
+                        <ul class="secondUl">
+                            <li><a>音乐</a></li>
+                            <li><a>影视</a></li>
+                            <li><a>教育音像</a></li>
+                            <li><a>游戏</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>文艺</a></div>
+                        <ul class="secondUl">
+                            <li><a>小说</a></li>
+                            <li><a>文学</a></li>
+                            <li><a>青春文学</a></li>
+                            <li><a>传记</a></li>
+                            <li><a>艺术</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>人文社科</a></div>
+                        <ul class="secondUl">
+                            <li><a>历史</a></li>
+                            <li><a>心理学</a></li>
+                            <li><a>政治/军事</a></li>
+                            <li><a>国学/古籍</a></li>
+                            <li><a>哲学/宗教</a></li>
+                            <li><a>社会科学</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>经管励志</a></div>
+                        <ul class="secondUl">
+                            <li><a>经济</a></li>
+                            <li><a>金融与投资</a></li>
+                            <li><a>管理</a></li>
+                            <li><a>励志与成功</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>生活</a></div>
+                        <ul class="secondUl">
+                            <li><a>家教与育儿</a></li>
+                            <li><a>旅游/地图</a></li>
+                            <li><a>烹饪/美食</a></li>
+                            <li><a>时尚/美妆</a></li>
+                            <li><a>家居</a></li>
+                            <li><a>婚恋与两性</a></li>
+                            <li><a>娱乐/休闲</a></li>
+                            <li><a>健身与保健</a></li>
+                            <li><a>动漫/幽默</a></li>
+                            <li><a>体育/运动</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>科技</a></div>
+                        <ul class="secondUl">
+                            <li><a>科普</a></li>
+                            <li><a>IT</a></li>
+                            <li><a>建筑</a></li>
+                            <li><a>医学</a></li>
+                            <li><a>工业技术</a></li>
+                            <li><a>电子/通信</a></li>
+                            <li><a>农林</a></li>
+                            <li><a>科学与自然</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>少儿</a></div>
+                        <ul class="secondUl">
+                            <li><a>少儿</a></li>
+                            <li><a>0-2岁</a></li>
+                            <li><a>3-6岁</a></li>
+                            <li><a>7-10岁</a></li>
+                            <li><a>11-14岁</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>教育</a></div>
+                        <ul class="secondUl">
+                            <li><a>教材</a></li>
+                            <li><a>中小学教辅</a></li>
+                            <li><a>考试</a></li>
+                            <li><a>外语学习</a></li>
+                        </ul>
+                    </div>
+                    <div class="innerC clearfix">
+                        <div class="innerTitle"><a>其他</a></div>
+                        <ul class="secondUl">
+                            <li><a>英文原版书</a></li>
+                            <li><a>港台图书</a></li>
+                            <li><a>工具书</a></li>
+                            <li><a>套装书</a></li>
+                            <li><a>杂志/期刊</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="rightDiv lAr">
+                    <a><img title="家电" src="../img/家电.jpg" height="70" width="194"/></a>
+                    <br/>
+                    <a><img title="小家电--三清聚宝盆" src="../img/小家电.jpg"></a>
+                    <br/>
+                    <div class="rightTwo">
+                        <p><a><b>推荐品牌</b></a></p>
+                        <p><a>美的官方旗舰店</a></p>
+                        <p><a>九阳旗舰店</a></p>
+                        <p><a>海尔统帅旗舰店</a></p>
+                        <p><a>小熊旗舰店</a></p>
+                    </div>
+                    <a><img id="img1" title="游戏机" src="../img/游戏机.jpg"></a>
+                </div>
+            </div>
+            <div id="b"><a>图片</a><a>画册</a><a>影视</a><a>短片</a></div>
+        </li>
+        <li class="firstLi"><a href="#">家用电器</a></li>
+        <li class="firstLi"><a href="#">手机、数码</a></li>
+        <li class="firstLi"><a href="#">电脑办公</a></li>
+        <li class="firstLi"><a href="#">家居、家具、家装、厨具</a></li>
+        <li class="firstLi"><a href="#">服饰内衣、珠宝首饰</a></li>
+        <li class="firstLi"><a href="#">呵护化妆</a></li>
+        <li class="firstLi"><a href="#">靴子、箱包、钟表、奢侈品</a></li>
+        <li class="firstLi"><a href="#">运动户外</a></li>
+        <li class="firstLi"><a href="#">汽车用品</a></li>
+        <li class="firstLi"><a href="#">母婴、玩具乐器</a></li>
+        <li class="firstLi"><a href="#">食品饮料、酒类、生鲜</a></li>
+        <li class="firstLi"><a href="#">营养保健</a></li>
+    </ul>
+</div>
+</body>
+</html>

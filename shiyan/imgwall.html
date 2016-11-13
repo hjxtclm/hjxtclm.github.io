@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>照片墙</title>
+    <style>
+        #container {
+            width: 950px;
+            height: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px #ccc;
+            position: relative;
+            overflow: hidden;
+            background: #ccc;
+        }
+
+        .img {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            padding: 10px 8px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px #999;
+            transition: transform 0.4s;
+            z-index: 1;
+            border: 1px solid #aaa;
+        }
+
+        .imgHover {
+            z-index: 2;
+        }
+    </style>
+    <script src="../jq/jquery-3.1.1.js"></script>
+</head>
+<body>
+<div id="container">
+    <img class="img" title="点击拖动" alt="图片" src="../img/1.png"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/2.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/3.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/4.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/5.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/6.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/7.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/8.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/9.jpg"/>
+    <img class="img" title="点击拖动" alt="图片" src="../img/10.jpg"/>
+</div>
+<script>
+    $(".img").each(function (index, ele) {
+        var x = Math.round(Math.random() * ($("#container").width() - $(".img").width()));
+        var y = Math.round(Math.random() * ($("#container").height() - $(".img").height()));
+        var deg = Math.random() * 50 - 25;
+        $(ele).css({
+            left: x + "px",
+            top: y + "px",
+            transform: "rotate(" + deg + "deg)"
+        })
+    });
+    var a, b;
+
+    function mouseIn() {
+        a = $(this).css("transform");
+        b = $(this).css("boxShadow");
+        $(this).css({
+            transform: "scale(1.2) rotate(0deg)",
+            zIndex: "2",
+            boxShadow: "5px 5px 5px #999"
+        });
+    }
+
+    function mouseOut() {
+        $(this).css({
+            transform: a,
+            zIndex: "1",
+            boxShadow: b
+        })
+    }
+    $(".img").hover(mouseIn, mouseOut);
+
+
+    $(".img").on("mousedown", function (e) {
+        $(".img").unbind("mouseenter").unbind("mouseleave");
+        e.preventDefault();
+        var $this = $(this);
+        var $con = $("#container");
+        var cx = e.pageX - this.offsetLeft;
+        var cy = e.pageY - this.offsetTop;
+        $con.on("mousemove", function (e) {
+            move(e, cx, cy, $this);
+        });
+        $con.on("mouseup", function () {
+            $(".img").hover(mouseIn, mouseOut);
+            $con.off("mousemove mouseup");
+        })
+    });
+
+    function move(e, x, y, obj) {
+        var l = e.pageX - x;
+        var t = e.pageY - y;
+        var maxL = $("#container").width() - $(".img").outerWidth();
+        var maxT = $("#container").height() - $(".img").outerHeight();
+        if (l <= 0) {
+            l = 0;
+        } else if (l >= maxL) {
+            l = maxL;
+        }
+        if (t <= 0) {
+            t = 0;
+        } else if (t >= maxT) {
+            t = maxT;
+        }
+        obj.css({
+            left: l + "px",
+            top: t + "px"
+        })
+    }
+</script>
+</body>
+</html>

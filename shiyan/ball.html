@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #a{
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>小球降落</title>
+    <script>
+        var ball = {
+            r:5,
+            g:1.98
+        };
+        window.onload = function(){
+            var a = document.getElementById("a");
+            var c = a.getContext("2d");
+            document.onmousedown = function(e){
+                drawArc(c,e);
+            }
+        };
+        var timer = 0;
+        function drawArc(obj,e){
+            ball.x = e.clientX;
+            ball.y = e.clientY;
+            ball.vx = Math.random()*10+1;
+            ball.vy = 0;
+            clearInterval(timer);
+            timer =  setInterval(function(){
+                obj.clearRect(0,0,obj.canvas.width,obj.canvas.height);
+                //小球掉落至最低端弹起
+                if(ball.y>=obj.canvas.height-ball.r){
+                    ball.y=obj.canvas.height-ball.r;
+                    ball.vy = -0.6*ball.vy;
+                }
+                obj.beginPath();
+                obj.fillStyle = "#ff0000";
+                obj.arc(ball.x,ball.y,ball.r,0,2*Math.PI);
+                obj.fill();
+                obj.closePath();
+                //小球与左右墙接触反弹
+                if(ball.x+ball.r>=obj.canvas.width||ball.x-ball.r<=0){
+                    ball.vx = -ball.vx;
+                }
+                if(ball.vx>=-0.3&&ball.vx<=0.3&&ball.vy<=0.3&&ball.vy>=-0.3){
+                    ball.vx = 0;
+                    ball.y = ball.y=300-ball.r;
+                    ball.vy = 0;
+                }
+                ball.x += ball.vx;
+                if(ball.vx>0){
+                    ball.vx -= 0.02;
+                }else{
+                    ball.vx += 0.02;
+                }
+                ball.y += ball.vy;
+                ball.vy += ball.g;
+            },50)
+        }
+    </script>
+</head>
+<body>
+<p>点击生成小球</p>
+<canvas id="a" width="300" height="300"></canvas>
+</body>
+</html>

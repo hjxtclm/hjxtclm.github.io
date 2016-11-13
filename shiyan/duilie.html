@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>队列</title>
+    <style>
+        #bottom span {
+            background: red;
+            width: 10px;
+            margin: 0 2px;
+            display: inline-block;
+            vertical-align: bottom;
+            transition: height 500ms;
+        }
+
+        #bottom {
+            font-size: 0;
+        }
+        #content span{
+            margin: 0 5px;
+            background: red;
+            color: white;
+            font-size: 24px;
+        }
+        #content b{
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div id="top">
+    <input type="text" id="text">
+    <button>左侧入</button>
+    <button>右侧入</button>
+    <button>左侧出</button>
+    <button>右侧出</button>
+    <button>冒泡排序</button>
+    <button>选择排序</button>
+    <button>插入排序</button>
+    <button>随机50</button>
+</div>
+<div id="bottom"></div>
+<div id="search">
+    <p>以空格或其他特殊字符分割</p>
+    <label for="textArea"></label>
+    <textarea id="textArea"></textarea>
+    <button>添加</button>
+    <button>查询</button>
+    <div id="content">
+
+    </div>
+</div>
+<script>
+    //insertBefore(newNode,existNode)
+    var flag = false;
+    var bottomDiv = document.getElementById("bottom");
+    var topDiv = document.getElementById("top");
+    var btn = topDiv.getElementsByTagName("button");
+    var textInput = document.getElementById("text");
+    var span = bottomDiv.getElementsByTagName("span");
+    function leftIn() {
+        check();
+        if (flag) {
+//            s.unshift("<span>" + textInput.value + "</span>");
+//            setDate();
+            var span = document.createElement("span");
+            span.innerHTML = textInput.value;
+            span.style.height = textInput.value + "px";
+            bottomDiv.insertBefore(span, bottomDiv.firstChild);
+        }
+    }
+    function rightIn() {
+        check();
+        if (flag) {
+//            s.push("<span>" + textInput.value + "</span>");
+//            setDate();
+            var span = document.createElement("span");
+            span.innerHTML = textInput.value;
+            span.style.height = textInput.value + "px";
+            bottomDiv.appendChild(span);
+        }
+    }
+    function leftOut() {
+        if (bottomDiv.children.length != 0) {
+            alert(bottomDiv.firstChild.innerHTML);
+//            s.shift();
+//            setDate();
+            bottomDiv.removeChild(bottomDiv.firstChild);
+        } else {
+            alert("数组为空")
+        }
+    }
+    function rightOut() {
+        if (bottomDiv.children.length != 0) {
+            alert(bottomDiv.lastChild.innerHTML);
+//            s.pop();
+//            setDate();
+            bottomDiv.removeChild(bottomDiv.lastChild);
+        } else {
+            alert("数组为空")
+        }
+    }
+    function check() {
+        if (!textInput.value.match(/^\d+$/)) {
+            alert("请输入整数");
+            flag = false;
+            textInput.value = "";
+        } else {
+            if (textInput.value >= 10 && textInput.value <= 100) {
+                flag = true;
+            } else {
+                textInput.value = "范围10-100";
+                flag = false;
+            }
+        }
+    }
+    function randomNum() {
+        var s = [], num;
+        for (var i = 0; i < 50; i++) {
+            num = Math.round(Math.random() * 90 + 10);
+            s.push("<span style=\"height:" + num + "px;\">" + num + "</span>");
+        }
+        bottomDiv.innerHTML = s.join(" ");
+    }
+    //    function setDate(){
+    //        bottomDiv.innerHTML=s.join(" ");
+    //    }
+    function init() {
+        btn[0].onclick = leftIn;
+        btn[1].onclick = rightIn;
+        btn[2].onclick = leftOut;
+        btn[3].onclick = rightOut;
+        btn[4].onclick = function () {
+            bubbleSort(span);
+        };
+        btn[5].onclick = function () {
+            selectSort(span);
+        };
+        btn[6].onclick = function () {
+            insertionSort(span);
+        };
+        btn[7].onclick = randomNum;
+        bottomDiv.onclick = function (event) {
+            var e = event || window.event;
+            var target = e.target || e.srcElement;
+            if (target.nodeName.toLowerCase() !== "span") {
+                return;
+            } else {
+                bottomDiv.removeChild(target);
+            }
+//            s=bottomDiv.innerHTML.split(" ");
+        };
+    }
+    init();
+    //    randomNum();
+    //插入法：后一个元素，和前面的元素相比，如果小于，则将前一个元素赋值给后一个元素，相当于将前一个元素后移一位
+    function insertionSort(a) {
+        for (var i = 1; i < a.length; i++) {
+            var current = parseInt(a[i].innerHTML);
+            var j = i - 1;
+            while (j >= 0 && parseInt(a[j].innerHTML) > current) {
+                a[j + 1].innerHTML = a[j].innerHTML;
+                a[j + 1].style.height = a[j + 1].innerHTML + "px";
+                j--;
+            }
+            a[j + 1].innerHTML = current;
+            a[j + 1].style.height = a[j + 1].innerHTML + "px";
+        }
+    }
+    //冒泡法：相连的两个元素两两比较，冒泡一次就会把最大或最小的元素放在数组末尾
+    function bubbleSort(a) {
+        for (var i = 0; i < a.length; i++) {
+            for (var j = 0; j < a.length - 1 - i; j++) {
+                if (parseInt(a[j].innerHTML) > parseInt(a[j + 1].innerHTML)) {
+                    var item = a[j].innerHTML;
+                    a[j].innerHTML = a[j + 1].innerHTML;
+                    a[j + 1].innerHTML = item;
+//                    swap(j, (j + 1));
+                    a[j + 1].style.height = a[j + 1].innerHTML + "px";
+                    a[j].style.height = a[j].innerHTML + "px";
+//                    console.log(j + "," + (j + 1));
+//                    s.push([j, (j + 1)]);
+                }
+            }
+        }
+    }
+    //选择法：每一元素与其后面的元素比较，如果遇到小于它的元素，则选择小的元素继续与后面的元素比较，循环一次
+    //将最小的元素放在开头
+    function selectSort(a) {
+        var min, item;
+        for (var i = 0; i < a.length - 1; i++) {
+            min = i;
+            for (var j = i + 1; j < a.length; j++) {
+                if (parseInt(a[min].innerHTML) > parseInt(a[j].innerHTML)) {
+                    min = j;
+                }
+            }
+            item = a[i].innerHTML;
+            a[i].innerHTML = a[min].innerHTML;
+            a[min].innerHTML = item;
+            a[i].style.height = a[i].innerHTML + "px";
+            a[min].style.height = a[min].innerHTML + "px";
+        }
+        return a;
+
+    }
+    var animation = (function () {
+        var fire = false, queue = [], first = true, self, timer;
+
+        function makeAnim(x, y, fn) {
+            swap(x, y);
+            span[x].style.height = span[x].innerHTML + "px";
+            span[y].style.height = span[y].innerHTML + "px";
+            fn();
+        }
+        function swap(x, y) {
+            var item;
+            item = span[x].innerHTML;
+            span[x].innerHTML = span[y].innerHTML;
+            span[y].innerHTML = item;
+        }
+        function _fire() {
+            if (!fire) {
+                var one = queue.shift();
+                if (one) {
+                    fire = true;
+                    timer = setTimeout(function () {
+                        one(function () {
+                            fire = false;
+                            _fire();
+                        })
+                    }, 1000);
+                } else {
+                    fire = false;
+                    first = true;
+                }
+            }
+        }
+
+        return self = {
+            add: function (x, y) {
+                queue.push(function (fn) {
+                    makeAnim(x, y, fn);
+                });
+                if (first && queue.length) {
+                    first = false;
+                    self.fire();
+                }
+                return this;
+            },
+            fire: function () {
+                _fire();
+            },
+            cleanTime: function () {
+                clearTimeout(timer);
+            },
+            first: first,
+            firing: fire,
+            q:queue
+        }
+    })();
+
+
+
+    //搜索检索
+    function part(str) {
+        return str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(e) {
+           return e != null && e.length > 0;
+        });
+    }
+    function point(s, val) {
+        var l=s.length;
+        var num =new RegExp(val,"ig");//正则表达式不接受变量，所以用正则对象
+        for(var i=0;i<l;i++){
+            if(s[i].match(num)){
+                s[i]=s[i].replace(num,"<b>"+s[i].match(num)[0]+"</b>");
+            }
+        }
+        return s;
+    }
+    function addIn(s) {
+        var l = s.length, a = [];
+        for (var i = 0; i < l; i++) {
+            a.push("<span>" + s[i] + "</span>");
+        }
+        return a;
+    }
+    function play() {
+        var val = document.getElementById("textArea");
+        var sch = document.getElementById("search");
+        var btn = sch.getElementsByTagName("button");
+        var content = document.getElementById("content");
+        var cSpan = content.getElementsByTagName("span");
+        var a, s=[];
+        btn[0].onclick = function () {
+            s = s.concat(part(val.value));
+            a=addIn(s);
+            content.innerHTML = a.join("");
+        };
+        btn[1].onclick = function () {
+            var a=[].concat(s);//复制数组对象
+            content.innerHTML=addIn( point(a, val.value)).join("");
+        }
+    }
+    play();
+    function styleSet(obj,josn){
+        for(attr in josn){
+            if(attr=="opacity"){
+                obj.style.filter="Alpha(Opacity="+josn[attr]*100+")";
+            }
+            obj.style.attr=josn[attr];
+        }
+
+    }
+</script>
+</body>
+</html>

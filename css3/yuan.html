@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>圆</title>
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        span{
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(220,0,0,.5);
+            box-shadow: 0 1em 1em rgba(0,0,0,.3);
+            position: relative;
+            animation: middle 1s infinite ease-in-out;
+        }
+        span:before,span:after{
+            /*display: inline-block;*/
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            box-shadow: 0 1em 1em rgba(0,0,0,.3);
+            animation: middle 1s infinite ease-in-out;
+        }
+        span:before{
+            width:50px;
+            height:50px;
+            margin: -25px 0 0 -25px;
+            background: rgba(0,220,0,.5);
+        }
+        span:after{
+            width: 100px;
+            height: 100px;
+            margin: -50px 0 0 -50px;
+            background: rgba(0,0,220,.5);
+        }
+        @keyframes middle {
+            0%{
+                transform: scale(1);
+                box-shadow: 0 1em 1em rgba(0,0,0,.3);
+            }
+            50%{
+                transform: scale(1.25);
+                box-shadow: 0 1.25em 1.25em rgba(0,0,0,.3);
+            }
+        }
+    </style>
+</head>
+<body>
+<span></span>
+</body>
+</html>

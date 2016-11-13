@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>淘宝轮播图</title>
+    <style>
+        #pic {
+            width: 720px;
+            height: 455px;
+            overflow: hidden;
+            position: relative;
+            font-size: 0;
+            margin:50px auto;
+        }
+        #p{
+            white-space: nowrap;
+            width:100%;
+            height:100%;
+            position: relative;
+            left:0;
+        }
+        .img {
+            display: inline-block;
+            position: relative;
+        }
+
+        #pic img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bottom {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            bottom: 0;
+        }
+
+        .circle {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 15px 5px;
+            background: #fff;
+            border: 1px solid #999;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .select {
+            background: rgba(0,0,0,.5);
+        }
+
+        [id*="pic-"] {
+            position: absolute;
+            display: none;
+            top: 50%;
+            width: 40px;
+            height: 80px;
+            margin-top: -40px;
+            background-image: url("http://www.imooc.com/static/img/home/pre.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(0, 0, 0, .3);
+            text-indent: -90em;
+        }
+
+        [id*="pic-"]:hover {
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        #pic-left {
+            left: 0;
+            transform: rotate(180deg);
+        }
+
+        #pic-right {
+            right: 0;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var pic=document.getElementById("pic");
+            var p = document.getElementById("p");
+            var picLeft = document.getElementById("pic-left");
+            var picRight = document.getElementById("pic-right");
+            cloneChild(p);
+            autoPlay(p);
+            pic.addEventListener("mouseover",function(){
+                clearInterval(timer);
+                changeDis(picLeft);
+                changeDis(picRight);
+            },false);
+            pic.addEventListener("mouseout",function(){
+                autoPlay(p);
+                changeDis(picLeft);
+                changeDis(picRight);
+            },false);
+            point(p);
+            picLeft.addEventListener("click",function () {
+                index--;
+                change(p);
+            },false);
+            picRight.addEventListener("click",function(){
+                index++;
+                change(p);
+            },false)
+        };
+
+        function changeDis(obj){
+           obj.style.display=obj.style.display=="block"?"none":"block";
+        }
+
+        function cloneChild(obj){
+            var c = obj.getElementsByTagName("a")[0].cloneNode(true);
+            obj.appendChild(c);
+        }
+
+        var index=0,timer=null;
+        function autoPlay(obj){
+            timer=setInterval(function(){
+                index++;
+                if(index>5){
+                    index=1;
+                    obj.style.left=0;
+                }
+                changePic(obj,index);
+            },2000);
+        }
+
+
+        function changePic(obj,i){
+            var pic=document.getElementById("pic");
+            var picWidth = parseInt(getStyle(pic,"width"));
+            var circle = getClass("pic","circle");
+            moveJs(obj,{left:-i*picWidth});
+            for(var j=0;j<circle.length;j++){
+                circle[j].className="circle";
+            }
+            if(i>=circle.length){
+                circle[i-circle.length].className+=" select"
+            }else {
+                circle[i].className += " select";
+            }
+        }
+
+
+        function point(obj){
+            var circle = getClass("pic","circle");
+            for(var i=0;i<circle.length;i++){
+                circle[i].i=i;
+                circle[i].addEventListener("mouseover",function(){
+                    changePic(obj,this.i);
+                    index=this.i;
+                },false)
+            }
+        }
+
+        function change(obj){
+            if(index<0){
+                index=4;
+            }
+            if(index>4){
+                index=0;
+            }
+            changePic(obj,index);
+        }
+    </script>
+    <script src="../move.js"></script>
+</head>
+<body>
+<div id="pic">
+    <div id="p">
+        <a class="img"><img src="http://img1.dwstatic.com/lol/1610/340544816588/1476589621530.jpg"></a>
+        <a class="img"><img src="http://img4.dwstatic.com/lol/1610/340544816588/1476589738975.jpg"></a>
+        <a class="img"><img src="http://img3.dwstatic.com/lol/1610/340220001155/1476264803966.jpg"></a>
+        <a class="img"><img src="http://img2.dwstatic.com/lol/1610/340353392996/1476398196022.jpg"></a>
+        <a class="img"><img src="http://img1.dwstatic.com/lol/1610/340364979905/1476409783692.jpg"></a>
+    </div>
+    <div class="bottom">
+        <span class="circle select"></span>
+        <span class="circle"></span>
+        <span class="circle"></span>
+        <span class="circle"></span>
+        <span class="circle"></span>
+    </div>
+    <a id="pic-left">
+        上一张<!--<img src="http://www.imooc.com/static/img/home/pre.png"/>-->
+    </a>
+    <a id="pic-right">
+        下一张<!--<img src="http://www.imooc.com/static/img/home/pre.png"/>-->
+    </a>
+</div>
+</body>
+</html>

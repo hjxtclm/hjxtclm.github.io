@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>游戏中心</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-family: "微软雅黑";
+        }
+        li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #222;
+        }
+        .clearFix:after{
+            content: "";
+            font-size: 0;
+            height: 0;
+            display: block;
+            clear: both;
+        }
+        .container{
+            width:466px;
+            background: #fff;
+            border-radius: 0 0 4px 0;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+        }
+        .left{
+            width:264px;
+            float: left;
+            margin-top:15px;
+        }
+        .left p{
+            line-height: 24px;
+        }
+        .left li{
+            float:left;
+            box-sizing: border-box;
+        }
+        .first{
+            position: relative;
+            padding:0 12px;
+            font-size: 12px;
+            width:240px;
+            height: 128px;
+            overflow: hidden;
+        }
+        .second{
+            padding: 12px 12px 0 ;
+            text-align: center;
+            font-size: 14px;
+            height: 102px;
+        }
+        .second img{
+            width:64px;
+            box-sizing: border-box;
+        }
+        .first>span{
+            position: absolute;
+            bottom: 0;
+            left:0;
+            margin-left: 12px;
+            width:220px;
+            line-height: 30px;
+            padding:0 10px;
+            color:#fff;
+            background: url(http://static.biligame.net/biligametop/img/shadow.png) repeat-x;
+        }
+        .right{
+            width:201px;
+            float: left;
+            margin-top: 12px;
+        }
+        .right ul{
+            padding:35px 0 0 6px;
+            background: url(http://static.biligame.net/biligametop/img/title.png) no-repeat;
+            line-height: 28px;
+            font-size: 12px;
+        }
+        .right p{
+            position: absolute;
+            margin-left:150px;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+        .right p a{
+            color:rgb(0,161,214)
+        }
+        li:hover{
+            background: rgba(0,0,0,.1);
+        }
+        .right li{
+            padding-left: 16px;
+            border-left: 1px solid rgb(223,223,223);
+        }
+        .img{
+            position: absolute;
+            width:220px;
+            height:220px;
+            margin-left: 436px;
+            margin-top: 36px;
+        }
+    </style>
+    <script src="../jq/jquery-3.1.1.js"></script>
+    <script>
+        $(function(){
+            $(".aImg").hover(function(){
+                $(".img").css({
+                    background:"url("+$(this).attr("data-img")+"),no-repeat"
+                })
+            },function(){
+                $(".img").css({
+                    background:""
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="container clearFix">
+        <div class="left">
+            <ul>
+                <li class="first"><a href="#"><img src="http://i0.hdslb.com/bfs/game/6f2c70700e01a1bfdc101a53c851aa2155e500aa.jpg"/></a>
+                    <span>命运-冠位指定(Fate/go)</span></li>
+                <li class="second"><a href="#"><img src="http://i0.hdslb.com/bfs/game/182ba7d00263c4a90111758e38a2bf694b19107f.jpg"/></a><p>崩坏3</p></li>
+                <li class="second"><a href="#"><img src="http://i0.hdslb.com/bfs/game/dcd121f96ac3be42faad3587e4c015fbfc304b8d.png"/></a><p>阴阳师</p></li>
+                <li class="second"><a href="#"><img src="http://i0.hdslb.com/bfs/game/173b0b07d28c8e232d4b12a594c63c6a18395b6a.png"/></a><p>那兔之大</p></li>
+            </ul>
+        </div>
+        <div class="right">
+            <p><a href="#">游戏论坛</a></p>
+            <ul>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/6b138b68d4bcb75c486ffa7e592970298e659c29.png"><a href="#">神代梦花昙</a></li>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/82d16f654bfcc27f728bc8a8e9fb193310484eee.png"><a href="#">装甲联盟</a></li>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/0f38471ed9f2260a6625fc3df1cf947994be1541.png"><a href="#">少女咖啡枪</a></li>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/c776546e88a6c2ddf6d5c3fc1bab388ea4154ddd.png"><a href="#">魔法小女小圆</a></li>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/11b2f80a4d64a911f9177603805c187c8837fb40.png"><a href="#">幻游猎人</a></li>
+                <li class="aImg" data-img="http://i0.hdslb.com/bfs/game/ec0ca23ed09e3a10c7c5391db8f868e06a04866a.png"><a href="#">造物法则</a></li>
+            </ul>
+        </div>
+        <div class="img">
+
+        </div>
+    </div>
+</body>
+</html>

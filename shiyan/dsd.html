@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            perspective: 800px;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            background: rgb(38,155,231);
+        }
+        .container{
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transform: rotateX(0deg) translateZ(-10px);
+            animation: scroll 5s linear -50ms infinite;
+        }
+        .container div{
+            position: absolute;
+        }
+        .container div:nth-of-type(5n-4):nth-of-type(odd){
+            width: 100px;
+            height: 100px;
+            background: rgb(38,155,231);
+            animation: r 5s linear -50ms infinite;
+        }
+        .container div:nth-of-type(5n-4):nth-of-type(even){
+            width: 100px;
+            height: 100px;
+            transform: translateZ(-20px);
+            background: rgb(38,155,231);
+            animation: r 5s linear -50ms infinite;
+        }
+
+        .container div:nth-of-type(5n-3){
+            width: 100px;
+            height: 20px;
+            transform: rotateX(90deg) translateZ(-90px) translateY(-10px);
+            background: #fff;
+        }
+        .container div:nth-of-type(5n-2){
+            width: 100px;
+            height: 20px;
+            transform: rotateX(90deg) translateZ(10px) translateY(-10px);
+            background: #fff;
+        }
+        .container div:nth-of-type(5n-1){
+            width: 100px;
+            height: 20px;
+            transform: translateX(-50px) rotateY(90deg) rotateZ(90deg) translateX(40px) translateY(-10px);
+            background: #fff;
+        }
+        .container div:nth-of-type(5n){
+            width: 100px;
+            height: 20px;
+            transform: translateX(50px) rotateY(90deg) rotateZ(90deg) translateX(40px) translateY(-10px);
+            background: #fff;
+        }
+        @keyframes scroll {
+             0%{
+                 transform: translateZ(-10px);
+             }
+            20%{
+                transform: translateZ(0px) rotateY(0deg);
+            }
+            40%{
+                transform: translateZ(0px) rotateY(120deg);
+            }
+            60%{
+                transform: translateZ(0px) rotateY(240deg);
+            }
+            80%{
+                transform: translateZ(0px) rotateY(360deg);
+            }
+            100%{
+                transform: translateZ(-10px) ;
+            }
+        }
+        @keyframes r {
+            0%,10%{
+            background:rgb(38,155,231);
+            }
+            50%{
+                background:rgb(1,116,203);
+                box-shadow:  0 0 10px #b9b9b9;
+            }
+            90%,100%{
+                background:rgb(38,155,231);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+</body>
+</html>

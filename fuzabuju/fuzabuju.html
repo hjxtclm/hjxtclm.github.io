@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>复杂布局</title>
+    <style>
+        body{
+           margin: 0;
+        }
+        .clearfix:after{
+            content: "";
+            height: 0;
+            display: block;
+            clear: both;
+        }
+        #header {
+            width: 100%;
+            height: 57px;
+            background: rgb(33, 137, 190);
+            line-height: 56px;
+        }
+        #icon img{
+            vertical-align: middle;
+            margin-left: 48px;
+        }
+        .inlineBlock {
+            display: inline-block;
+        }
+
+        #hRight {
+            float: right;
+        }
+        .search{
+            border-radius: 22px;
+            background: #ffffff;
+            height: 28px;
+            line-height: 28px;
+            width: 314px;
+            padding-left: 40px;
+            margin-right: 40px;
+        }
+        .search img{
+            position: absolute;
+            margin-left: -30px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+        .search input{
+            width: 294px;
+        }
+        input {
+            outline:none;
+            border:none;
+        }
+        .login{
+            margin-right: 100px;
+        }
+        .login img{
+            position: absolute;
+            margin-top: 19px;
+            margin-left: -20px;
+        }
+        .login span{
+           font-size: 0.9em;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #container{
+            overflow: hidden;
+            width: 100%;
+        }
+        #left{
+            float: left;
+            min-width: 337px;
+            background: rgb(43,46,61);
+            text-align: center;
+            margin-bottom:-3000px;
+            padding-bottom:3000px;
+        }
+        #right{
+            float: left;
+            min-width: 1012px;
+            background: rgb(238,238,238);
+            margin-bottom:-3000px;
+            padding-bottom:3000px;
+        }
+        .top{
+            line-height: 95px;
+        }
+        .content1{
+            background: #ffffff;
+        }
+        .topicon{
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 2px solid rgb(185,186,190);
+            vertical-align: middle;
+        }
+        .innericon{
+            width: 54px;
+            height: 54px;
+            margin: 2px;
+            border-radius: 50%;
+            background: rgb(185,186,190);
+        }
+        .name{
+            margin-left: 20px;
+            line-height: 60px;
+            color: white;
+            font-size: 1.5em;
+            vertical-align: middle;
+        }
+        #fans{
+            margin: 17px 0;
+        }
+        #fans span{
+            width: 30px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: rgb(105,124,141);
+            padding: 0 30px;
+        }
+        #fans span:first-child{
+            border-right: 1px solid rgb(105,124,141);
+        }
+        .file{
+            text-align: left;
+            padding: 20px 0 20px 50px;
+            background: rgb(55,61,77);
+            color:rgb(110,128,150);
+        }
+        .file>p{
+            font-size: 0.9em;
+        }
+        ul{
+          list-style-type: none;
+        }
+        .oneUl{
+            font-size: 0.9em;
+            line-height: 25px;
+        }
+        .oneUl>li>a{
+            text-decoration: none;
+            color:rgb(110,128,150);
+        }
+        .oneUl>li:hover a{
+            font-weight: 600;
+            color: rgb(238,237,242);
+        }
+        .oneUl>li:hover .twoUl{
+            display: block;
+        }
+        .twoUl{
+            display: none;
+        }
+        li:hover{
+            cursor: pointer;
+            color: rgb(238,237,242);
+        }
+        .msg{
+            text-align: left;
+            padding: 0 0 20px 10px;
+            line-height: 50px;
+            color:rgb(110,128,150);
+            font-size: 0.9em;
+        }
+        .rightHead{
+            font-size: 0.8em;
+            color: rgb(196,196,196);
+            line-height: 32px;
+            padding-left: 30px;
+            background: white;
+        }
+        .al{
+            margin: 10px 0;
+        }
+        .main{
+            width:80%;
+            margin: 0 auto;
+        }
+        .a{
+            width: 150px;
+            text-align: center;
+            line-height: 38px;
+            font-size: 0.8em;
+            margin: 13px 0;
+            float: left;
+        }
+        .b{
+            font-size: 0.8em;
+            width: 550px;
+            padding: 0;
+            line-height: 36px;
+        }
+        .b>li{
+            display:inline-block;
+            margin: 0 10px;
+        }
+        .b>li:hover{
+            color: #337ab7;
+        }
+        .mm{
+            width: 120px;
+        }
+        .b+div{
+            width: 50px;
+            line-height: 25px;
+            text-align: center;
+            background: rgb(53,139,188);
+            color: white;
+            font-size: 0.8em;
+            border-radius: 5px;
+            position:absolute;
+            margin-top: 37px;
+            margin-left: -30px;
+            cursor: pointer;
+        }
+        .date{
+            width: 95px;
+            height: 65px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 65px;
+            background: #ffffff;
+            box-sizing: border-box;
+        }
+        .date:hover{
+            border-top: 4px solid rgb(67,136,201);
+        }
+        .date span{
+            display: inline-block;
+            line-height: 26px;
+            font-size: 0.8em;
+            vertical-align: middle;
+        }
+        .date span b{
+            font-size: 0.9em;
+            color: rgb(193,193,193);
+        }
+        .date span strong{
+            font-size: 1.9em;
+            color: rgb(236,100,0);
+        }
+
+        .point{
+            width: 25px;
+            height: 65px;
+            background: #ffffff;
+            -webkit-transition: all 1s;
+            -moz-transition: all 1s;
+            -o-transition: all 1s;
+            transition: all 1s;
+        }
+        .point:hover{
+            background: rgb(67,136,201);
+        }
+        .history{
+            width:125px;
+            height: 65px;
+            background: #ffffff;
+        }
+        .san{
+            box-shadow: 0 0 5px #ccc;
+        }
+        .point,.history{
+            line-height: 65px;
+            text-align: center;
+            vertical-align: bottom;
+        }
+        .point img,.history img{
+            vertical-align: middle;
+        }
+        .history span{
+            vertical-align: middle;
+            font-size: 0.9em;
+            color: rgb(114,114,114);
+        }
+        .content3 span{
+            font-size: 0.8em;
+            letter-spacing: normal;
+        }
+        .content3>div{
+            width: 173px;
+            height: 70px;
+            line-height: 70px;
+            margin-right: 31px;
+            box-shadow: 0 0 5px #ccc;
+            box-sizing: border-box;
+        }
+        .content3>div:last-child{
+            margin-right: 0;
+        }
+        .content3>div:nth-of-type(1){
+            border-left: 4px rgb(67,178,159) solid;
+        }
+        .content3>div:nth-of-type(2){
+            border-left: 4px rgb(57,138,193) solid;
+        }
+        .content3>div:nth-of-type(3){
+            border-left: 4px rgb(207,75,54) solid;
+        }
+        .content3>div:nth-of-type(4){
+            border-left: 4px rgb(225,205,70) solid;
+        }
+        .cdata{
+            background: #ffffff;
+        }
+        .cdata div:first-child{
+            width: 67px;
+            line-height: 20px;
+            text-align: left;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+        .cdata div:last-child{
+            width: 68px;
+            height: 45px;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .div1{
+            background: rgb(67,178,159);
+        }
+        .div2{
+            background: rgb(57,138,193);
+        }
+        .div3{
+            background: rgb(207,75,54);
+        }
+        .div4{
+            background: rgb(225,205,70);
+        }
+        .c4left{
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+            background: #ffffff;
+            width: 60%;
+        }
+        .pp{
+            background: rgb(240,240,240);
+            font-size: 0.9em;
+            margin: 0;
+            padding: 10px 0 10px 10px;
+            border-radius: 7px 7px 0 0;
+            color: rgb(176,176,176);
+        }
+        .c4table{
+            padding: 10px 20px;
+        }
+
+        .c4table ul{
+            padding: 0;
+            margin: 0;
+        }
+        .c4table ul li{
+            display: inline-block;
+            border: 1px solid #b9b9b9;
+            width: 80px;
+            border-radius: 5px 5px 0 0;
+            line-height: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            background: #cccccc;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .c4table ul li:hover{
+            color:black;
+            background: #ffffff;
+            border-bottom: 1px solid #ffffff;
+            /*z-index: 1;*/
+            bottom:-1px;
+        }
+        .table{
+            padding:30px 40px 40px 40px;
+            border: 1px solid #b9b9b9;
+            background: #ffffff;
+            margin-top: -1px;
+        }
+        .table table{
+            border: 1px solid #c9c9c9;
+            border-collapse: collapse;
+            font-size: 0.8em;
+        }
+        .table table tr td:hover{
+            background: rgb(57,138,193);
+            color: white;
+        }
+        .table table tr td{
+            padding: 5px 10px;
+            border: 1px solid #c9c9c9;
+            -webkit-transition: all 1s;
+            -moz-transition: all 1s;
+            -o-transition: all 1s;
+            transition: all 1s;
+        }
+        .c4right{
+            width: 38%;
+            background: #ffffff;
+            vertical-align: top;
+            margin-left: 4px;
+            border-radius: 7px;
+            border: 1px solid #cccccc;
+        }
+        .c4title{
+            width: 60%;
+            margin: 20px auto 0;
+            font-size: 0.9em;
+            border-bottom: 1px solid #cccccc;
+        }
+        .c4tip{
+            margin: 0 auto;
+            font-size: 0.9em;
+            width: 60%;
+            border-bottom: 1px solid #cccccc;
+        }
+        .tipL,.tipR{
+            padding: 10px 0;
+        }
+        .tipL input,.tipR input{
+            width: 74px;
+        }
+        .tipL{
+            border-right: 1px solid #cccccc;
+        }
+        .c4content{
+            width:60%;
+            margin: 10px auto 10px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #cccccc;
+        }
+        .c4content textarea{
+            width: 100%;
+            height: 92px;
+            outline: none;
+            border: none;
+            resize: none;
+        }
+        .btn{
+            width: 40px;
+            line-height: 25px;
+            text-align: center;
+            background: rgb(53,139,188);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            float: right;
+        }
+        .c4btn{
+            width: 60%;
+            margin:0 auto;
+            height: 50px;
+            font-size: 0.8em;
+        }
+        .c5Left{
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+            background: #ffffff;
+            width:47%;
+        }
+        .datelist{
+            font-size: 0.8em;
+            text-align: center;
+            padding: 20px;
+        }
+        .datelist td{
+            height: 38px;
+            width:46px;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -ms-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+        .datelist td:hover{
+           background: rgb(241,158,78);
+        }
+        .f{
+            border: 1px solid rgb(241,158,78);
+        }
+        .datelist table{
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .datelist th{
+            border-bottom: 1px solid #cccccc;
+            border-top: 1px solid #cccccc;
+            font-weight: 600;
+        }
+        .month{
+            text-align: center;
+            width: 100px;
+            border: 1px solid #cccccc;
+            background: #ffffff;
+        }
+        .month select{
+            border: none;
+            outline: none;
+        }
+        .c5Right{
+            vertical-align: top;
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+            background: #ffffff;
+        }
+        .c5Right table{
+            border-collapse: collapse;
+            border: 1px solid #cccccc;
+            text-align: center;
+            font-size: 0.9em;
+            line-height: 20px;
+            margin: 15px 20px;
+        }
+        .c5Right table tr:hover{
+            background: #cccccc;
+        }
+        .c5Right table th{
+            border: 1px solid #cccccc;
+            font-weight: 600;
+        }
+        .c5Right table .td1{
+            border: 1px solid #cccccc;
+            width:75px;
+        }
+        .score{
+            width:217px;
+            border: 1px solid #cccccc;
+            font-size: 0.9em;
+        }
+        .score div{
+            height: 8px;
+            background: rgb(220,220,220);
+            display: inline-block;
+            width: 152px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .score div span{
+            display:inline-block;
+            height: 8px;
+            vertical-align: top;
+        }
+        .span1{
+            width:85%;
+            background:rgb(238,110,83);
+        }
+        .span2{
+            width:75%;
+            background:rgb(239,129,80);
+        }
+        .span3{
+            width:65%;
+            background:rgb(241,158,78);
+        }
+        .span4{
+            width:60%;
+            background:rgb(126,201,240);
+        }
+        .span5{
+            width:55%;
+            background:rgb(126,201,240);
+        }
+        .span6{
+            width:50%;
+            background:rgb(126,201,240);
+        }
+        .span7{
+            width:46%;
+            background:rgb(126,201,240);
+        }
+        .span8{
+            width:42%;
+            background:rgb(126,201,240);
+        }
+        .span9{
+            width:38%;
+            background:rgb(126,201,240);
+        }
+        .span10{
+            width:35%;
+            background:rgb(126,201,240);
+        }
+
+        .score>span{
+            width: 50px;
+            display:inline-block;
+            margin-right: 5px;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+<div id="header">
+    <div id="icon" class="inlineBlock"><img src="../img/icon.png"/></div>
+    <div id="hRight" class="inlineBlock">
+        <div class="search inlineBlock">
+            <img src="../img/search.png" title="搜索" alt="搜索"/>
+            <input type="text" placeholder="这里可以输入"/>
+        </div>
+        <div class="login inlineBlock">
+        <img src="../img/登录.png" alt="登录" title="登录"/><span>登录</span>
+        </div>
+    </div>
+</div>
+<div id="container" class="clearfix">
+    <div id="left">
+        <!--头像-->
+        <div class="top">
+            <div class="topicon inlineBlock">
+                <div class="innericon"></div>
+            </div>
+            <div class="name inlineBlock">hjxtclm</div>
+        </div>
+        <!--粉丝-->
+        <div id="fans">
+            <span class="inlineBlock">收藏110</span><span class="inlineBlock">粉丝313</span>
+        </div>
+        <!--文件-->
+        <div class="file">
+            <p><img src="../img/个人报表.png"/> 个人报表</p>
+            <ul class="oneUl">
+                <li><img src="../img/文件夹.png"/> <a href="#ul1">文件一</a>
+                <ul class="twoUl" id="ul1">
+                    <li><img src="../img/文档.png"/> 文档一</li>
+                    <li><img src="../img/文档.png"/> 文档二</li>
+                </ul>
+                </li>
+                <li><img src="../img/文件夹.png"/> <a href="#ul1">文件二</a>
+                    <ul class="twoUl" id="ul2">
+                        <li><img src="../img/文档.png"/> 文档一</li>
+                        <li><img src="../img/文档.png"/> 文档二</li>
+                    </ul>
+                </li>
+                <li><img src="../img/文件夹.png"/> <a href="#ul1">文件三</a>
+                <ul class="twoUl" id="ul3">
+                    <li><img src="../img/文档.png"/> 文档一</li>
+                    <li><img src="../img/文档.png"/> 文档二</li>
+                </ul>
+                </li>
+            </ul>
+        </div>
+        <!--信息-->
+        <div class="msg">
+            <ul>
+                <li><img src="../img/star.png"/> 个人收藏</li>
+                <li><img src="../img/star.png"/> 我的分享</li>
+                <li><img src="../img/star.png"/> 图库</li>
+                <li><img src="../img/star.png"/> 成长记录</li>
+                <li><img src="../img/star.png"/> 账户信息</li>
+            </ul>
+        </div>
+    </div>
+    <div id="right">
+        <div class="rightHead">&nbsp;C站 / 个人报表 / 文件一 / 文档一 </div>
+        <div class="main">
+            <div class="content1 al">
+                <div class="a inlineBlock">
+                    <label for="dt">查询项</label>
+                    <select id="dt">
+                        <option value="first">第一项</option>
+                        <option value="second">第二项</option>
+                        <option value="three">第三项</option>
+                        <option value="four">第四项</option>
+                    </select>
+                </div>
+                <ul class="b inlineBlock">
+                    <li>
+                        <label for="li1">买方</label>
+                        <select id="li1" class="mm">
+                            <option value="first">小a</option>
+                            <option value="second">小b</option>
+                            <option value="three">小c</option>
+                            <option value="four">小d</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="li2">日期</label>
+                        <select id="li2" class="mm">
+                            <option value="first">2016-10-18</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="li3">总耗时</label>
+                        <select id="li3">
+                            <option value="first">8天</option>
+                            <option value="second">9天</option>
+                            <option value="three">10天</option>
+                            <option value="four">11天</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="li4">卖方</label>
+                        <select id="li4" class="mm">
+                            <option value="first">大A</option>
+                            <option value="second">大B</option>
+                            <option value="three">大C</option>
+                            <option value="four">大D</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="li5">人数</label>
+                        <select id="li5">
+                            <option value="first">10人</option>
+                            <option value="second">11人</option>
+                            <option value="three">12人</option>
+                            <option value="four">13人</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="li6">成交项</label>
+                        <select id="li6" class="mm">
+                            <option value="first">10项</option>
+                            <option value="second">11项</option>
+                            <option value="three">12项</option>
+                            <option value="four">13项</option>
+                        </select>
+                    </li>
+                </ul>
+                <div class="inlineBlock">搜索</div>
+            </div>
+            <div class="content2 al">
+                <div class="point inlineBlock san">
+                    <img src="../img/箭头.png"/>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>10:00am<br/><b>￥<strong>1200</strong></b></span>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>11:00am<br/><b>￥<strong>1300</strong></b></span>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>12:00am<br/><b>￥<strong>1400</strong></b></span>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>1:00pm<br/><b>￥<strong>1200</strong></b></span>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>2:00pm<br/><b>￥<strong>1500</strong></b></span>
+                </div>
+                <div class="date inlineBlock san">
+                    <span>3:00pm<br/><b>￥<strong>1600</strong></b></span>
+                </div>
+                <div class="point inlineBlock san">
+                    <img src="../img/向右箭头.png"/></div>
+                <div class="history inlineBlock san">
+                    <img src="../img/历史查询.png"/>
+                    <span>历史查询</span>
+                </div>
+            </div>
+            <div class="content3 al">
+                <span>2016年10月份统计</span><br/>
+                <div class="cdata inlineBlock">
+                    <div>133111<br/>成交量</div>
+                    <div class="div1"></div>
+                </div>
+                <div class="cdata inlineBlock">
+                    <div>133111<br/>成交量</div>
+                    <div class="div2"></div>
+                </div>
+                <div class="cdata inlineBlock">
+                    <div>133111<br/>成交量</div>
+                    <div class="div3"></div>
+                </div>
+                <div class="cdata inlineBlock">
+                    <div>133111<br/>成交量</div>
+                    <div class="div4"></div>
+                </div>
+            </div>
+            <div class="content4 al">
+                <div class="c4left inlineBlock">
+                    <p class="pp">第一组项目</p>
+                    <div class="c4table">
+                        <ul>
+                            <li>项目一</li>
+                            <li>项目二</li>
+                            <li>项目三</li>
+                            <li>项目四</li>
+                        </ul>
+                        <div class="table">
+                       <table>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                           <tr>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                               <td>购买材料一</td>
+                           </tr>
+                       </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c4right inlineBlock">
+                    <p class="pp">第一组项目</p>
+                    <div class="c4title">
+                        <label for="title">标题</label><br/>
+                        <input type="text" value="" id="title" name="title" placeholder="项目报表三">
+                    </div>
+                    <div class="c4tip">
+                        <div class="tipL inlineBlock">
+                            <label for="price">价格</label><br/>
+                            ￥<input type="text" value="" id="price" name="title" placeholder="158">
+                        </div>
+                        <div class="tipR inlineBlock">
+                            <label for="people">负责人</label><br/>
+                            <input type="text" value="" id="people" name="title" placeholder="小a">
+                        </div>
+                    </div>
+                    <div class="c4content">
+                        <label for="c4t">详细描述</label>
+                        <textarea id="c4t" placeholder="该项目目前负责人是..."></textarea>
+                    </div>
+                    <div class="c4btn">
+                        <input type="checkbox" id="check"><label for="check">遵守保密协议</label>
+                        <div class="btn">搜索</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content5 al">
+                <div class="c5Left inlineBlock">
+                <p class="pp">日历</p>
+                <div class="datelist inlineBlock">
+                    <select title="year">
+                        <option>2016年</option>
+                        <option>2015年</option>
+                        <option>2017年</option>
+                    </select>
+                    <div class="month inlineBlock">
+                    <select title="month">
+                        <option>4月</option>
+                        <option>5月</option>
+                        <option>6月</option>
+                    </select>
+                    </div>
+                    <select title="day">
+                        <option>标注日期</option>
+                        <option>1号</option>
+                        <option>2号</option>
+                    </select>
+                    <button>返回今天</button>
+                    <table>
+                        <tr class="th">
+                            <th>一</th>
+                            <th>二</th>
+                            <th>三</th>
+                            <th>四</th>
+                            <th>五</th>
+                            <th>六</th>
+                            <th>日</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>1<br/>愚人节</td>
+                            <td>2<br/>愚人节</td>
+                            <td>3<br/>愚人节</td>
+                        </tr>
+                        <tr>
+                            <td class="f">4<br/>愚人节</td>
+                            <td>5<br/>愚人节</td>
+                            <td>6<br/>愚人节</td>
+                            <td>7<br/>愚人节</td>
+                            <td>8<br/>愚人节</td>
+                            <td>9<br/>愚人节</td>
+                            <td>10<br/>愚人节</td>
+                        </tr>
+                        <tr>
+                            <td class="f">11<br/>愚人节</td>
+                            <td>12<br/>愚人节</td>
+                            <td>13<br/>愚人节</td>
+                            <td>14<br/>愚人节</td>
+                            <td>15<br/>愚人节</td>
+                            <td>16<br/>愚人节</td>
+                            <td>17<br/>愚人节</td>
+                        </tr>
+                        <tr>
+                            <td>18<br/>愚人节</td>
+                            <td>19<br/>愚人节</td>
+                            <td>20<br/>愚人节</td>
+                            <td class="f">21<br/>愚人节</td>
+                            <td>22<br/>愚人节</td>
+                            <td>23<br/>愚人节</td>
+                            <td>24<br/>愚人节</td>
+                        </tr>
+                        <tr>
+                            <td>25<br/>愚人节</td>
+                            <td>26<br/>愚人节</td>
+                            <td>27<br/>愚人节</td>
+                            <td>28<br/>愚人节</td>
+                            <td>29<br/>愚人节</td>
+                            <td>30<br/>愚人节</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                </div>
+                <div class="c5Right inlineBlock">
+                    <p class="pp">汽车行业品牌版</p>
+                    <div class="dataList ">
+                        <table>
+                            <tr>
+                                <th>排名</th>
+                                <th>品牌</th>
+                                <th>搜索指数</th>
+                            </tr>
+                            <tr>
+                                <td class="td1">1</td>
+                                <td class="td1">大众</td>
+                                <td class="score"><span>121234</span><div><span class="span1"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">2</td>
+                                <td class="td1">丰田</td>
+                                <td class="score"><span>121234</span><div><span class="span2"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">3</td>
+                                <td class="td1">奥迪</td>
+                                <td class="score"><span>121234</span><div><span class="span3"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">4</td>
+                                <td class="td1">本田</td>
+                                <td class="score"><span>121234</span><div><span class="span4"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">5</td>
+                                <td class="td1">福特</td>
+                                <td class="score"><span>121234</span><div><span class="span5"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">6</td>
+                                <td class="td1">宝马</td>
+                                <td class="score"><span>121234</span><div><span class="span6"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">7</td>
+                                <td class="td1">现代</td>
+                                <td class="score"><span>121234</span><div><span class="span7"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">8</td>
+                                <td class="td1">起亚</td>
+                                <td class="score"><span>121234</span><div><span class="span8"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">9</td>
+                                <td class="td1">奔驰</td>
+                                <td class="score"><span>121234</span><div><span class="span9"></span></div></td>
+                            </tr>
+                            <tr>
+                                <td class="td1">10</td>
+                                <td class="td1">别克</td>
+                                <td class="score"><span>121234</span><div><span class="span10"></span></div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

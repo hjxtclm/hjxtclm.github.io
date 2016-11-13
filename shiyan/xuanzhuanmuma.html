@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旋转木马</title>
+    <style>
+        #stage{
+            perspective: 800px;
+            perspective-origin: 50% 20%;
+        }
+        #container{
+            width: 125px;
+            height: 125px;
+            transform-style: preserve-3d;
+            margin: 0 auto;
+            transform: rotateY(0deg);
+            -webkit-transition: all 500ms;
+            -moz-transition: all 500ms;
+            -ms-transition: all 500ms;
+            -o-transition: all 500ms;
+            transition: all 500ms;
+        }
+        img{
+            width: 125px;
+            height: 125px;
+            background: #999;
+            position: absolute;
+        }
+        img:nth-of-type(1){
+            transform: rotateY(40deg) translateZ(195.8px);
+        }
+        img:nth-of-type(2){
+            transform: rotateY(80deg) translateZ(195.8px);
+        }
+        img:nth-of-type(3){
+            transform: rotateY(120deg) translateZ(195.8px);
+        }
+        img:nth-of-type(4){
+            transform: rotateY(160deg) translateZ(195.8px);
+        }
+        img:nth-of-type(5){
+            transform: rotateY(200deg) translateZ(195.8px);
+        }
+        img:nth-of-type(6){
+            transform: rotateY(240deg) translateZ(195.8px);
+        }
+        img:nth-of-type(7){
+            transform: rotateY(280deg) translateZ(195.8px);
+        }
+        img:nth-of-type(8){
+            transform: rotateY(320deg) translateZ(195.8px);
+        }
+        img:nth-of-type(9){
+            transform: rotateY(360deg) translateZ(195.8px);
+        }
+    </style>
+    <script>
+        window.onload=function (){
+            var c = document.getElementById("container");
+            var i=0;
+            function r(){
+                c.style.transform="rotateY("+(i-=40)+"deg)";
+                if(i==-360){
+                    i=0;
+                }
+            }
+            c.onclick=r;
+        }
+    </script>
+</head>
+<body>
+<div id="stage">
+    <div id="container">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+        <img src="">
+    </div>
+</div>
+</body>
+</html>

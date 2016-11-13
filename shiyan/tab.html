@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tab选项切换</title>
+    <style>
+        body {
+            margin: 0;
+            font-size: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #222;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .clearfix:after {
+            content: "";
+            height: 0;
+            display: block;
+            clear: both;
+        }
+
+        /*选项卡盒子设置*/
+        #box {
+            width: 500px;
+            height: 200px;
+            border: 1px solid #b9b9b9;
+            box-shadow: 2px 2px 5px #ccc;
+            border-radius: 5px;
+            margin: 50px auto;
+            overflow: hidden;
+        }
+
+        /*选项设置*/
+        #tab {
+            width: 500px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        #tab li {
+            position: relative;
+            display: inline-block;
+            float: left;
+            width: 20%;
+            border-bottom: 1px solid #b9b9b9;
+            line-height: 40px;
+            text-align: center;
+            background: #f9f9f9;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /*加分界线*/
+        #tab li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 1px;
+            height: 40px;
+            background: #b9b9b9;
+        }
+
+        #tab li:first-child:before {
+            content: "";
+            height: 0;
+        }
+
+        /*文本内容*/
+        #content ul {
+            margin: 30px 50px 20px 50px;
+            display: none;
+            /*position: relative;*/
+        }
+
+        #content ul li {
+            float: left;
+            width: 50%;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+
+        /*选中高亮*/
+        #tab .active {
+            background: #fff;
+            border-bottom: 1px solid #fff;
+        }
+
+        /*动画*/
+        .animSpan {
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(236, 21, 0, .4);
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+            position: absolute;
+            opacity: 1;
+        }
+
+        .animation {
+            -webkit-animation: water 1s linear;
+            animation: water 1s linear;
+        }
+
+        @-webkit-keyframes water {
+            100% {
+                -webkit-transform: scale(2);
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes water {
+            100% {
+                -webkit-transform: scale(2);
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+    <script src="../jq/jquery-3.1.1.js"></script>
+    <script>
+        $(function () {
+            function water(e, obj) {
+                $(".animSpan").remove();
+                var posX = e.pageX;
+                var posY = e.pageY;
+                var widthStyle = $(obj).width();
+                var heightStyle = $(obj).height();
+                $(obj).prepend("<span class='animSpan'></span>");
+                if (widthStyle >= heightStyle) {
+                    heightStyle = widthStyle;
+                } else {
+                    widthStyle = heightStyle;
+                }
+                var curX = posX - $(obj).offset().left - widthStyle / 2;
+                var curY = posY - $(obj).offset().top - heightStyle / 2;
+                $(".animSpan").css({
+                    width: widthStyle + "px",
+                    height: heightStyle + "px",
+                    left: curX + "px",
+                    top: curY + "px"
+                }).addClass("animation");
+            }
+
+            $("#tab li").on("click", function (e) {
+                water(e, this);
+                $(this).addClass("active").siblings().removeClass("active");
+                $("#content ul").hide().eq($(this).index("li")).show();
+            });
+
+        })
+    </script>
+</head>
+<body>
+<div id="box">
+    <div id="tab">
+        <ul>
+            <li class="active">选项一</li>
+            <li>选项二</li>
+            <li>选项三</li>
+            <li>选项四</li>
+            <li>选项五</li>
+        </ul>
+    </div>
+    <div id="content">
+        <ul style="display: block" class="clearfix">
+            <li>
+                <b>
+                    <a href="#">[通知1]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知1]</a>
+                </b>
+                <a href="#">文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#"></a>
+                </b>
+                <a href="#">1文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知1]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+        </ul>
+        <ul class="clearfix">
+            <li>
+                <b>
+                    <a href="#">[通知2]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知2]</a>
+                </b>
+                <a href="#">文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#"></a>
+                </b>
+                <a href="#">2文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知2]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+        </ul>
+        <ul class="clearfix">
+            <li>
+                <b>
+                    <a href="#">[通知3]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知3]</a>
+                </b>
+                <a href="#">文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#"></a>
+                </b>
+                <a href="#">3文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知3]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+        </ul>
+        <ul class="clearfix">
+            <li>
+                <b>
+                    <a href="#">[通知4]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知4]</a>
+                </b>
+                <a href="#">文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#"></a>
+                </b>
+                <a href="#">4文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知4]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+        </ul>
+        <ul class="clearfix">
+            <li>
+                <b>
+                    <a href="#">[通知5]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知5]</a>
+                </b>
+                <a href="#">文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#"></a>
+                </b>
+                <a href="#">5文字文字文字文字</a>
+            </li>
+            <li>
+                <b>
+                    <a href="#">[通知5]</a>
+                </b>
+                <a href="#">文字文字文字文字</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

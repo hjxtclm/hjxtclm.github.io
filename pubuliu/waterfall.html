@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流</title>
+    <style>
+        #main {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .box {
+            padding: 15px 0 0 15px;
+            float: left;
+        }
+
+        .pic {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #ccc;
+        }
+
+        .pic img {
+            width: 200px;
+        }
+    </style>
+    <script>
+        function getClass(parent, clsName) {
+            var oParent = parent ? document.getElementById(parent) : document;
+            var children = oParent.getElementsByTagName("*");
+            var s = [];
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].className.match(clsName)) {
+                    s.push(children[i]);
+                }
+            }
+            return s;
+        }
+        var s = [];
+        function waterfall(obj, parent) {
+            var box = getClass(parent, obj);
+            var main = document.getElementById(parent);
+            var oWidth = box[0].offsetWidth;
+            var winWidth = document.documentElement.clientWidth || document.body.clientWidth;
+            var cols = Math.floor(winWidth / oWidth);
+            main.style.width = cols * oWidth + "px";
+            for (var i = 0; i < box.length; i++) {
+                if (i < cols) {
+                    s.push(box[i].offsetHeight);
+                } else {
+                    sortImg(box[i]);
+                }
+            }
+        }
+        function sortImg(obj) {
+            var box = getClass("main", "box");
+            var minHeight = Math.min.apply(null, s);
+            var index = getIndex(s, minHeight);
+            obj.style.position = "absolute";
+            obj.style.top = minHeight + "px";
+            obj.style.left = box[index].offsetLeft + "px";
+            s[index] += obj.offsetHeight;
+        }
+        function getIndex(arr, val) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == val) {
+                    return i;
+                }
+            }
+        }
+        function checkScroll(obj) {
+            var bottom = obj[obj.length - 1].offsetTop - parseInt(obj[obj.length - 1].offsetHeight / 2);
+            var scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            var pageHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            return (scroll + pageHeight) > bottom;
+        }
+        window.onload = function () {
+            var josn = {"data": [{"src": "3.jpg"}, {"src": "4.jpg"}, {"src": "5.jpg"}, {"src": "6.jpg"}, {"src": "7.jpg"}, {"src": "8.jpg"}]};
+            waterfall("box", "main");
+            window.onscroll = function () {
+                var box = getClass("main", "box");
+                var main = document.getElementById("main");
+                if (checkScroll(box)) {
+                    for (var i = 0; i < josn.data.length; i++) {
+                        var obj = document.createElement("div");
+                        obj.className = "box";
+                        var pic = document.createElement("div");
+                        pic.className = "pic";
+                        var img = document.createElement("img");
+                        img.src = josn.data[i].src;
+                        pic.appendChild(img);
+                        obj.appendChild(pic);
+                        main.appendChild(obj);
+                        sortImg(obj);
+                    }
+
+                }
+            }
+        };
+    </script>
+</head>
+<body>
+<div id="main">
+    <div class="box">
+        <div class="pic">
+            <img src="1.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="2.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="3.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="4.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="5.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="6.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="7.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="8.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="1.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="2.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="3.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="4.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="5.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="6.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="7.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="8.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="1.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="2.png"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="3.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="4.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="5.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="6.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="7.jpg"/>
+        </div>
+    </div>
+    <div class="box">
+        <div class="pic">
+            <img src="8.jpg"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

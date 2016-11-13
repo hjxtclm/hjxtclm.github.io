@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_blank">
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <style>
+        div {
+            width: 60%;
+            margin: 100px auto 0;
+        }
+
+        .first {
+            border: 1px solid #ccc;
+            padding: 20px 30px 20px 50px;
+            margin: 0 auto;
+            width: 50%;
+            box-shadow: 0 0 10px #20090a;
+            font-size: 1.5em;
+            border-radius: 10px;
+        }
+
+        .second {
+            font-size: 1em;
+            padding-left: 5px;
+            height: 0;
+            overflow: hidden;
+            list-style-type: none;
+        }
+
+        a {
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            font-weight: bolder;
+            color: #337ab7;
+            font-family: "微软雅黑";
+            transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+        }
+
+        li {
+            border-bottom: 1px solid rgba(0, 0, 0, .3);
+            width: 390px;
+        }
+
+        a:hover {
+            background-color: #337ab7;
+            color: #fff;
+            padding-left: 50px;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="../move.js" type="text/javascript"></script>
+    <script>
+        window.onload = function () {
+            var firstLi = document.getElementsByClassName("firstLi");
+            for (var i = 0, l = firstLi.length; i < l; i++) {
+                var a = firstLi[i].children[0];
+                a.flag = true;
+                a.onclick = function () {
+                    if (this.flag) {
+                        for (var j = 0; j < l; j++) {
+                            if (!firstLi[j].children[0].flag) {
+                                moveJs(firstLi[j].children[1], {height: 0});
+                                firstLi[j].children[0].flag = true;
+                            }
+                        }
+                        moveJs(this.parentNode.children[1], {height: 255});
+                        this.flag = false;
+                    } else {
+                        moveJs(this.parentNode.children[1], {height: 0});
+                        this.flag = true;
+                    }
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div>
+    <ol class="first">
+        <li class="firstLi"><a>常用特效</a>
+            <ol class="second">
+                <li><a href="../pictrue/pictrue.html">图片随鼠标移动</a></li>
+                <li><a href="../JD/JD.html">京东下拉菜单</a></li>
+                <li><a>tab切换</a></li>
+                <li><a>鼠标事件1</a></li>
+                <li><a>鼠标事件2</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>常见页面布局</a>
+            <ol class="second">
+                <li><a href="../fuzabuju/fuzabuju.html">复杂布局</a></li>
+                <li><a>京东下拉菜单</a></li>
+                <li><a>tab切换</a></li>
+                <li><a>鼠标事件1</a></li>
+                <li><a>鼠标事件2</a></li>
+            </ol>
+        </li>
+        <li class="firstLi"><a>常用动画</a>
+            <ol class="second">
+                <li><a>图片随鼠标移动</a></li>
+                <li><a>京东下拉菜单</a></li>
+                <li><a>tab切换</a></li>
+                <li><a>鼠标事件1</a></li>
+                <li><a>鼠标事件2</a></li>
+            </ol>
+        </li>
+    </ol>
+</div>
+</body>
+</html>

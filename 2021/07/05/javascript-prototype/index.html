@@ -17,7 +17,7 @@
 
 
 
-<title>使用 Hexo 创建博客 | hjx</title>
+<title>JS 原型和原型链 | hjx</title>
 
 
 
@@ -156,7 +156,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        使用 Hexo 创建博客
+        JS 原型和原型链
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -220,29 +220,29 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        使用 Hexo 创建博客
+        JS 原型和原型链
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-08-09</time>
+            <time>2024-08-13</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>2 min</span>
+            <span>1 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>470 words</span>
+            <span>447 words</span>
           </span>
           
             <span class="text-gray-400">·</span>
             <span class="flex items-center gap-1">
               <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
-              <a class="article-category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+              <a class="article-category-link" href="/categories/JS-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">JS 基础知识</a>
             </span>
           
         </section>
@@ -251,66 +251,45 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 是一款快速简介高效的博客框架， 支持 markdown 格式， 支持主题， 支持插件， 支持一键部署到 GitHub Pages。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>需提前安装 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js</a> 和 <a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>。</p>
-<h3 id="全局安装-Hexo"><a href="#全局安装-Hexo" class="headerlink" title="全局安装 Hexo"></a>全局安装 Hexo</h3><p>使用 npm 安装 <code>hexo-cli</code> 和 <code>hexo-deploy-git</code>。</p>
-<ul>
-<li>hexo-cli：Hexo 的命令行工具</li>
-<li>hexo-deploy-git：Hexo 的 Git 部署插件</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建博客项目"><a href="#创建博客项目" class="headerlink" title="创建博客项目"></a>创建博客项目</h3><h4 id="创建-Hexo-项目"><a href="#创建-Hexo-项目" class="headerlink" title="创建 Hexo 项目"></a>创建 Hexo 项目</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog</span><br></pre></td></tr></table></figure>
-
-<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ pnpm install</span><br></pre></td></tr></table></figure>
-
-<h4 id="本地预览"><a href="#本地预览" class="headerlink" title="本地预览"></a>本地预览</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置-Hexo"><a href="#配置-Hexo" class="headerlink" title="配置 Hexo"></a>配置 Hexo</h4><p>通过博客项目的 <code>_config.yml</code> 文件配置博客信息。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 博客标题</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客副标题</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客描述</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客作者</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">John</span> <span class="string">Doe</span></span><br><span class="line"><span class="comment"># 语言</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">en</span></span><br><span class="line"><span class="comment"># 时区</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h4><p>在 Hexo 官网上有丰富的主题，可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>。</p>
-<p>选择自己喜欢的主题后，通过主题 Github 仓库下载主题，将主题文件复制到博客项目的 <code>themes</code> 目录下。</p>
-<p>然后在 <code>config.yml</code> 文件中配置主题。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span> <span class="comment"># 填写自己要配置的主题名称</span></span><br></pre></td></tr></table></figure>
-
-<p>然后重新构建，启动本地服务既可在本地预览</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
-
-<h3 id="部署到-GitHub-Pages"><a href="#部署到-GitHub-Pages" class="headerlink" title="部署到 GitHub Pages"></a>部署到 GitHub Pages</h3><ol>
-<li><p>在 GitHub 上创建一个仓库，仓库名称为 <code>&lt;username&gt;.github.io</code>，例如 <code>johndoe.github.io</code>。</p>
+    <h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><h3 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h3><ol>
+<li><p>每个函数（除了箭头函数）都有一个 <code>prototype</code> 属性，这个属性指向函数的原型对象。</p>
 </li>
-<li><p>在博客项目的 <code>_config.yml</code> 文件中配置部署信息。</p>
+<li><p>每个函数（除了箭头函数）都可以通过 <code>new</code> 来创建对象实例。</p>
+</li>
+<li><p>每个对象实例都有一个 <code>__proto__</code>（隐式原型）属性，这个属性指向创建它的构造函数的原型对象。</p>
 </li>
 </ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/&lt;username&gt;/&lt;username&gt;.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">&quot;deploy&quot;</span></span><br><span class="line">  <span class="attr">root:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
+<p>根据这三个条件，我们可以画出以下的图：</p>
+<p><img src="/../imgs/prototype/prototype1.png" alt="原型链"></p>
+<p>函数的 <code>prototype</code> 属性是一个对象，所以也是通过 <code>new</code> 来创建的对象实例，它的 <code>__proto__</code> 属性指向 <code>Object</code> 函数的 <code>prototype</code> 属性。</p>
+<p>这里也可以画出一个三角图形，Object 包含 <code>prototype</code> 原型对象，函数的 <code>prototype</code> 通过 <code>new Object()</code> 创建，函数的 <code>prototype</code> 属性的 <code>__proto__</code> 指向 Object 的 <code>prototype</code> 对象。</p>
+<p><img src="/../imgs/prototype/prototype2.png" alt="原型链"></p>
+<p>然后是 <code>Object.prototype</code> 对象，这里比较特殊，**它的 <code>__proto__</code> 属性指向 <code>null</code>**。</p>
+<p><img src="/../imgs/prototype/prototype3.png" alt="原型链"></p>
+<p>接着是最开始的函数 <code>function</code>，在 JS 中，它也是一个对象，是通过 <code>new Function</code> 创建的，所以它也有 <code>__proto__</code> 属性，指向 <code>Function.prototype</code> 对象。</p>
+<p><img src="/../imgs/prototype/prototype4.png" alt="原型链"></p>
+<p><code>Object</code> 也是函数，同样也是通过 <code>new Function</code> 创建的，所以它也有 <code>__proto__</code> 属性，指向 <code>Function.prototype</code> 对象。</p>
+<p><img src="/../imgs/prototype/prototype5.png" alt="原型链"></p>
+<p><code>Function.prototype</code> 对象也是普通对象，所以也是通过 <code>new Object</code> 创建的，所以它的 <code>__proto__</code> 属性指向 <code>Object.prototype</code> 对象。</p>
+<p><img src="/../imgs/prototype/prototype6.png" alt="原型链"></p>
+<p>最后还有一个特殊的位置，**<code>Function</code> 的 <code>__proto__</code> 指向自身的 <code>prototype</code> 属性**。</p>
+<p><img src="/../imgs/prototype/prototype7.png" alt="原型链"></p>
+<p>至此，原型链就画完了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>原型链就是通过隐式原型 <code>__proto__</code> 依次向上查找属性，直到找到为止。</p>
+<p>JS 中，每个对象（普通对象，函数等）都有 <code>__proto__</code> 属性，这个属性指向创建它的构造函数的原型对象。</p>
+<p>每个函数都会有一个 <code>prototype</code> 属性，这个属性指向函数的原型对象。</p>
 
-<ol start="3">
-<li>构建并部署。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run deploy</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>访问 <code>https://&lt;username&gt;.github.io</code>，即可看到博客。</li>
-</ol>
-<h3 id="添加文章"><a href="#添加文章" class="headerlink" title="添加文章"></a>添加文章</h3><ol>
-<li><p>在博客项目的 <code>source/_posts</code> 目录下新建 markdown 文件，例如 <code>hello-world.md</code>。</p>
-</li>
-<li><p>在 markdown 文件中添加文章内容。</p>
-</li>
-</ol>
-<h4 id="给文章添加标题、标签、分类"><a href="#给文章添加标题、标签、分类" class="headerlink" title="给文章添加标题、标签、分类"></a>给文章添加标题、标签、分类</h4><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 标签1</span><br><span class="line"><span class="bullet">-</span> 标签2</span><br><span class="line">categories:</span><br><span class="line"><span class="section">- 分类1</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">文章内容</span><br></pre></td></tr></table></figure>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
     
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/Hexo/">Hexo</a>
+          <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
         </span>
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a>
+          <a href="/tags/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
         </span>
       
     
@@ -319,11 +298,16 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
+        <a href="/2021/07/05/javascript-type/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          JS 中数据类型及一些类型判断
+        </a>
+      
     </div>
     <div>
       
-        <a href="/2021/07/05/deep-clone/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          JS 浅拷贝和深拷贝
+        <a href="/2021/07/05/promise/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          手写 promise
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       

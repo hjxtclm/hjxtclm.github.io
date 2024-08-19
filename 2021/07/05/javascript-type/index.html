@@ -17,7 +17,7 @@
 
 
 
-<title>使用 Hexo 创建博客 | hjx</title>
+<title>JS 中数据类型及一些类型判断 | hjx</title>
 
 
 
@@ -156,7 +156,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        使用 Hexo 创建博客
+        JS 中数据类型及一些类型判断
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -220,7 +220,7 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        使用 Hexo 创建博客
+        JS 中数据类型及一些类型判断
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
@@ -236,13 +236,13 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>470 words</span>
+            <span>553 words</span>
           </span>
           
             <span class="text-gray-400">·</span>
             <span class="flex items-center gap-1">
               <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
-              <a class="article-category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+              <a class="article-category-link" href="/categories/JS-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">JS 基础知识</a>
             </span>
           
         </section>
@@ -251,66 +251,46 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 是一款快速简介高效的博客框架， 支持 markdown 格式， 支持主题， 支持插件， 支持一键部署到 GitHub Pages。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>需提前安装 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js</a> 和 <a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>。</p>
-<h3 id="全局安装-Hexo"><a href="#全局安装-Hexo" class="headerlink" title="全局安装 Hexo"></a>全局安装 Hexo</h3><p>使用 npm 安装 <code>hexo-cli</code> 和 <code>hexo-deploy-git</code>。</p>
+    <h2 id="JS-中数据类型"><a href="#JS-中数据类型" class="headerlink" title="JS 中数据类型"></a>JS 中数据类型</h2><p>JS 中总共有 8 种数据类型：</p>
 <ul>
-<li>hexo-cli：Hexo 的命令行工具</li>
-<li>hexo-deploy-git：Hexo 的 Git 部署插件</li>
+<li><code>undefined</code></li>
+<li><code>null</code></li>
+<li><code>boolean</code></li>
+<li><code>string</code></li>
+<li><code>number</code></li>
+<li><code>symbol</code></li>
+<li><code>bigint</code></li>
+<li><code>object</code></li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<p>除了 <code>object</code> 以外，所有类型都定义了表示在语言最低层面的不可变值。我们将这些值称为<strong>原始值</strong>。</p>
+<h2 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h2><h3 id="typeof"><a href="#typeof" class="headerlink" title="typeof"></a>typeof</h3><p><code>typeof</code> 操作符返回一个字符串，表示未经计算的操作数的类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">undefined</span> <span class="comment">// &quot;undefined&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// &quot;object&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">// &quot;boolean&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">&quot;foo&quot;</span> <span class="comment">// &quot;string&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="number">0</span> <span class="comment">// &quot;number&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>) <span class="comment">// &quot;symbol&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="number">10n</span> <span class="comment">// &quot;bigint&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">// &quot;object&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> alert <span class="comment">// &quot;function&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="title class_">NaN</span> <span class="comment">// &quot;number&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">// &quot;object&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="创建博客项目"><a href="#创建博客项目" class="headerlink" title="创建博客项目"></a>创建博客项目</h3><h4 id="创建-Hexo-项目"><a href="#创建-Hexo-项目" class="headerlink" title="创建 Hexo 项目"></a>创建 Hexo 项目</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog</span><br></pre></td></tr></table></figure>
+<p>除了 <code>null</code>，所有原始类型都可以使用 <code>typeof</code> 运算符进行测试。<code>typeof null</code> 返回 <code>&quot;object&quot;</code>，因此必须使用 <code>=== null</code> 来测试 <code>null</code>。</p>
+<h3 id="Object-prototype-toString-call"><a href="#Object-prototype-toString-call" class="headerlink" title="Object.prototype.toString.call()"></a>Object.prototype.toString.call()</h3><p><code>Object.prototype.toString.call()</code> 方法返回一个表示该对象的字符串，其中包含其类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="literal">undefined</span>) <span class="comment">// &quot;[object Undefined]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="literal">null</span>) <span class="comment">// &quot;[object Null]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="literal">true</span>) <span class="comment">// &quot;[object Boolean]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="string">&quot;foo&quot;</span>) <span class="comment">// &quot;[object String]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="number">0</span>) <span class="comment">// &quot;[object Number]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>)) <span class="comment">// &quot;[object Symbol]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="number">10n</span>) <span class="comment">// &quot;[object BigInt]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(&#123;&#125;) <span class="comment">// &quot;[object Object]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(alert) <span class="comment">// &quot;[object Function]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(<span class="title class_">NaN</span>) <span class="comment">// &quot;[object Number]&quot;</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>([]) <span class="comment">// &quot;[object Array]&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ pnpm install</span><br></pre></td></tr></table></figure>
+<h2 id="常用的类型判断方法"><a href="#常用的类型判断方法" class="headerlink" title="常用的类型判断方法"></a>常用的类型判断方法</h2><h3 id="判断对象的方法"><a href="#判断对象的方法" class="headerlink" title="判断对象的方法"></a>判断对象的方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 除去原始值以外的所有值都返回 true</span></span><br><span class="line">value !== <span class="literal">null</span> &amp;&amp; <span class="keyword">typeof</span> value === <span class="string">&#x27;object&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于上面的判断，Object 方法会尝试把传入的值转换为对象，如果本身已经是对象，则返回值本身。</span></span><br><span class="line">value === <span class="title class_">Object</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐使用，可以判断是否是纯粹的对象，包括通过 Object.create(null) 创建的对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(value) === <span class="string">&#x27;[object Object]&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="本地预览"><a href="#本地预览" class="headerlink" title="本地预览"></a>本地预览</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
+<h4 id="判断是否是空对象"><a href="#判断是否是空对象" class="headerlink" title="判断是否是空对象"></a>判断是否是空对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 1. value 中如果存在循环引用，JSON.stringify 会报错</span></span><br><span class="line"><span class="comment"> * 2. value 如果有 Symbol、function、undefined 等也返回 true</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(value) === <span class="string">&#x27;&#123;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 空数组、Map、Set、函数也会返回 true</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(value).<span class="property">length</span> === <span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="配置-Hexo"><a href="#配置-Hexo" class="headerlink" title="配置 Hexo"></a>配置 Hexo</h4><p>通过博客项目的 <code>_config.yml</code> 文件配置博客信息。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 博客标题</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客副标题</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客描述</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客作者</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">John</span> <span class="string">Doe</span></span><br><span class="line"><span class="comment"># 语言</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">en</span></span><br><span class="line"><span class="comment"># 时区</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
+<h3 id="判断数组的方法"><a href="#判断数组的方法" class="headerlink" title="判断数组的方法"></a>判断数组的方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 推荐使用</span></span><br><span class="line"><span class="title class_">Array</span>.<span class="title function_">isArray</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(value) === <span class="string">&#x27;[object Array]&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h4><p>在 Hexo 官网上有丰富的主题，可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>。</p>
-<p>选择自己喜欢的主题后，通过主题 Github 仓库下载主题，将主题文件复制到博客项目的 <code>themes</code> 目录下。</p>
-<p>然后在 <code>config.yml</code> 文件中配置主题。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span> <span class="comment"># 填写自己要配置的主题名称</span></span><br></pre></td></tr></table></figure>
+<h3 id="判断函数的方法"><a href="#判断函数的方法" class="headerlink" title="判断函数的方法"></a>判断函数的方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">value <span class="keyword">instanceof</span> <span class="title class_">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐使用</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span>.<span class="title function_">call</span>(value) === <span class="string">&#x27;[object Function]&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>然后重新构建，启动本地服务既可在本地预览</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
 
-<h3 id="部署到-GitHub-Pages"><a href="#部署到-GitHub-Pages" class="headerlink" title="部署到 GitHub Pages"></a>部署到 GitHub Pages</h3><ol>
-<li><p>在 GitHub 上创建一个仓库，仓库名称为 <code>&lt;username&gt;.github.io</code>，例如 <code>johndoe.github.io</code>。</p>
-</li>
-<li><p>在博客项目的 <code>_config.yml</code> 文件中配置部署信息。</p>
-</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/&lt;username&gt;/&lt;username&gt;.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">&quot;deploy&quot;</span></span><br><span class="line">  <span class="attr">root:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li>构建并部署。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run deploy</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>访问 <code>https://&lt;username&gt;.github.io</code>，即可看到博客。</li>
-</ol>
-<h3 id="添加文章"><a href="#添加文章" class="headerlink" title="添加文章"></a>添加文章</h3><ol>
-<li><p>在博客项目的 <code>source/_posts</code> 目录下新建 markdown 文件，例如 <code>hello-world.md</code>。</p>
-</li>
-<li><p>在 markdown 文件中添加文章内容。</p>
-</li>
-</ol>
-<h4 id="给文章添加标题、标签、分类"><a href="#给文章添加标题、标签、分类" class="headerlink" title="给文章添加标题、标签、分类"></a>给文章添加标题、标签、分类</h4><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 标签1</span><br><span class="line"><span class="bullet">-</span> 标签2</span><br><span class="line">categories:</span><br><span class="line"><span class="section">- 分类1</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">文章内容</span><br></pre></td></tr></table></figure>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
     
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/Hexo/">Hexo</a>
+          <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
         </span>
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a>
+          <a href="/tags/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
         </span>
       
     
@@ -319,11 +299,16 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
+        <a href="/2021/07/05/deep-clone/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          JS 浅拷贝和深拷贝
+        </a>
+      
     </div>
     <div>
       
-        <a href="/2021/07/05/deep-clone/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          JS 浅拷贝和深拷贝
+        <a href="/2021/07/05/javascript-prototype/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          JS 原型和原型链
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       

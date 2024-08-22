@@ -169,6 +169,9 @@ a:hover {
   counter-increment: enter-count;
   --stagger: counter(enter-count);
 }
+.fancybox-alt {
+  display: none;
+}
 @-moz-keyframes fall {
   0% {
     transform: translate(0px, 0px);

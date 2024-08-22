@@ -17,7 +17,7 @@
 
 
 
-<title>hjx</title>
+<title>使用 Hexo 创建博客 | hjx</title>
 
 
 
@@ -156,7 +156,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        使用 Hexo 创建博客
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -211,29 +211,39 @@
 
 <!-- toc -->
 
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
 <section class="px-6 max-w-prose mx-auto md:px-0">
   <!-- header -->
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        
+        使用 Hexo 创建博客
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-08-19</time>
+            <time>2024-08-21</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>1 min</span>
+            <span>2 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>25 words</span>
+            <span>470 words</span>
           </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+            </span>
           
         </section>
       </div>
@@ -241,24 +251,96 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p>中文文档地址不对，使用这个地址 <a target="_blank" rel="noopener" href="https://github.com/vercel/next-learn/tree/main/basics/learn-starter">https://github.com/vercel/next-learn/tree/main/basics/learn-starter</a></p>
-
+    <p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 是一款快速简介高效的博客框架， 支持 markdown 格式， 支持主题， 支持插件， 支持一键部署到 GitHub Pages。</p>
+<h2 id="Quick-Start">Quick Start</h2>
+<h3 id="准备工作">准备工作</h3>
+<p>需提前安装 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js</a> 和 <a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>。</p>
+<h3 id="全局安装-Hexo">全局安装 Hexo</h3>
+<p>使用 npm 安装 <code>hexo-cli</code> 和 <code>hexo-deploy-git</code>。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>hexo-cli：Hexo 的命令行工具</p>
+</li>
+<li class="lvl-2">
+<p>hexo-deploy-git：Hexo 的 Git 部署插件</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h3 id="创建博客项目">创建博客项目</h3>
+<h4 id="创建-Hexo-项目">创建 Hexo 项目</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog</span><br></pre></td></tr></table></figure>
+<h4 id="安装依赖">安装依赖</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ pnpm install</span><br></pre></td></tr></table></figure>
+<h4 id="本地预览">本地预览</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
+<h4 id="配置-Hexo">配置 Hexo</h4>
+<p>通过博客项目的 <code>_config.yml</code> 文件配置博客信息。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 博客标题</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客副标题</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客描述</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">simple</span> <span class="string">and</span> <span class="string">fast</span> <span class="string">blog</span> <span class="string">framework</span> <span class="string">powered</span> <span class="string">by</span> <span class="string">Hexo</span></span><br><span class="line"><span class="comment"># 博客作者</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">John</span> <span class="string">Doe</span></span><br><span class="line"><span class="comment"># 语言</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">en</span></span><br><span class="line"><span class="comment"># 时区</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
+<h4 id="主题配置">主题配置</h4>
+<p>在 Hexo 官网上有丰富的主题，可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>。</p>
+<p>选择自己喜欢的主题后，通过主题 Github 仓库下载主题，将主题文件复制到博客项目的 <code>themes</code> 目录下。</p>
+<p>然后在 <code>config.yml</code> 文件中配置主题。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span> <span class="comment"># 填写自己要配置的主题名称</span></span><br></pre></td></tr></table></figure>
+<p>然后重新构建，启动本地服务既可在本地预览</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br></pre></td></tr></table></figure>
+<h3 id="部署到-GitHub-Pages">部署到 GitHub Pages</h3>
+<ol>
+<li class="lvl-3">
+<p>在 GitHub 上创建一个仓库，仓库名称为 <code>&lt;username&gt;.github.io</code>，例如 <code>johndoe.github.io</code>。</p>
+</li>
+<li class="lvl-3">
+<p>在博客项目的 <code>_config.yml</code> 文件中配置部署信息。</p>
+</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/&lt;username&gt;/&lt;username&gt;.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">&quot;deploy&quot;</span></span><br><span class="line">  <span class="attr">root:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li class="lvl-3">
+<p>构建并部署。</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br><span class="line">$ npm run deploy</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li class="lvl-3">
+<p>访问 <code>https://&lt;username&gt;.github.io</code>，即可看到博客。</p>
+</li>
+</ol>
+<h3 id="添加文章">添加文章</h3>
+<ol>
+<li class="lvl-3">
+<p>在博客项目的 <code>source/_posts</code> 目录下新建 markdown 文件，例如 <code>hello-world.md</code>。</p>
+</li>
+<li class="lvl-3">
+<p>在 markdown 文件中添加文章内容。</p>
+</li>
+</ol>
+<h4 id="给文章添加标题、标签、分类">给文章添加标题、标签、分类</h4>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 标签1</span><br><span class="line"><span class="bullet">-</span> 标签2</span><br><span class="line">categories:</span><br><span class="line"><span class="section">- 分类1</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">文章内容</span><br></pre></td></tr></table></figure>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/Hexo/">Hexo</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a>
+        </span>
+      
     
   </div>
   <!-- prev and next -->
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
+        <a href="/2024/06/02/javascript-type/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          JS 中数据类型及一些类型判断
+        </a>
+      
     </div>
     <div>
-      
-        <a href="/2024/06/09/service-worder/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Service Worker 介绍
-          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
-        </a>
       
     </div>
   </div>

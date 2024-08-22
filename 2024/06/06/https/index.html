@@ -17,7 +17,7 @@
 
 
 
-<title>hjx</title>
+<title>用信鸽解释 HTTPS | hjx</title>
 
 
 
@@ -156,7 +156,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        用信鸽解释 HTTPS
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -211,29 +211,39 @@
 
 <!-- toc -->
 
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
 <section class="px-6 max-w-prose mx-auto md:px-0">
   <!-- header -->
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        
+        用信鸽解释 HTTPS
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-08-19</time>
+            <time>2024-08-21</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>1 min</span>
+            <span>2 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>25 words</span>
+            <span>704 words</span>
           </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </span>
           
         </section>
       </div>
@@ -241,22 +251,80 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p>中文文档地址不对，使用这个地址 <a target="_blank" rel="noopener" href="https://github.com/vercel/next-learn/tree/main/basics/learn-starter">https://github.com/vercel/next-learn/tree/main/basics/learn-starter</a></p>
+    <h2 id="初始通信">初始通信</h2>
+<p>假设我们在互联网的通信就像使用信鸽通信一样，信息由信鸽发送，信鸽收到信息后，将信息发送到信鸽接收者手中。</p>
+<p><img src="/../imgs/https/image1.png" alt="图片"></p>
+<p>就像上面这张图片一样，信息由信鸽发送，信鸽收到信息后，将信息发送到信鸽接收者手中。</p>
+<p>HTTP 的工作方式也是如此，信息通过明文传输。</p>
+<p>这种工作方式就很容易导致信息泄露，或者信息被串改。</p>
+<p><img src="/../imgs/https/image2.png" alt="图片"></p>
+<h2 id="简易加密">简易加密</h2>
+<p>既然明文传输会导致信息泄露，那么我们可以尝试使用加密的方式来保护信息。例如，传输的信息，每个字母向右移动一位。hello -&gt; ifmmp。</p>
+<p><img src="/../imgs/https/image3.png" alt="图片"></p>
+<p>这种工作方式就可以解决信息泄露的问题。但是这个工作的方式的前提是，双方必须提前约定加密解密方式，如果双方是没有见过面d的，那么双方就无法确定加密解密方式。</p>
+<blockquote>
+<p>双方使用同一个密钥进行加密解密，也叫对称解密。</p>
+</blockquote>
+<h2 id="如何约定加密解密方式">如何约定加密解密方式</h2>
+<ol>
+<li class="lvl-3">
+<p>通信开始时，先发送一只不带信息的鸽子给接受者。</p>
+</li>
+</ol>
+<p><img src="/../imgs/https/image4.png" alt="图片"></p>
+<ol start="2">
+<li class="lvl-3">
+<p>接受者有一个带锁的箱子和箱子的钥匙，然后将没有锁上的箱子发送给发送者。</p>
+</li>
+</ol>
+<p><img src="/../imgs/https/image5.png" alt="图片"></p>
+<ol start="3">
+<li class="lvl-3">
+<p>发送者收到没有锁上的箱子后，将信息放入箱子中，并且给箱子上锁，发送给接受者，接受者接收到箱子后，就可以通过自己的钥匙打开，读取里面的信息。</p>
+</li>
+</ol>
+<p><img src="/../imgs/https/image6.png" alt="图片"></p>
+<blockquote>
+<p>这种加密方式也叫非对称加密，在技术术语中，箱子被称为公钥，打开它的钥匙被称为私钥。</p>
+</blockquote>
+<h2 id="如何信任箱子">如何信任箱子</h2>
+<p>上面的情况，攻击者仍然可以在第二步的时候，将箱子替换成自己的箱子，每次接收信息时，用自己的钥匙就可以读取到发送信息，所以如何确保箱子是可信的。</p>
+<p>这里就需要一个公共的认证机构，发送者使用认证机构签名过后的箱子，接受者只需要验证接收的箱子是否是认证机构签名过的，就可以确定这个箱子是可信的。</p>
+<p>这里的认证机构在术语中叫做证书颁发机构。</p>
+<p>HTTPS 的工作原理也是如此，浏览器请求服务器数据时，服务器会返回一个证书，浏览器会验证证书有效性，如果证书是可信的，那么浏览器就会信任证书，浏览器就会使用证书中的公钥进行解密，从而读取到服务器发送的信息。</p>
+<blockquote>
+<p>原文地址：<a target="_blank" rel="noopener" href="https://baida.dev/articles/https-explained-with-carrier-pigeons">https://baida.dev/articles/https-explained-with-carrier-pigeons</a></p>
+</blockquote>
 
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
+        </span>
+      
     
   </div>
   <!-- prev and next -->
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
+        <a href="/2024/06/07/a11y/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          前端无障碍
+        </a>
+      
     </div>
     <div>
       
-        <a href="/2024/06/09/service-worder/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Service Worker 介绍
+        <a href="/2024/06/05/promise/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          手写 promise
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       

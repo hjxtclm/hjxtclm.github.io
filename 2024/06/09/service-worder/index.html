@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="hjx">
+
+
+  <meta name="subtitle" content="好好工作，热爱生活">
+
+
+
+
+<title>Service Worker 介绍 | hjx</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+    $("#toggle-dark").click(toggleDark);
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="hjx" />
+          hjx
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        Service Worker 介绍
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/hjxtclm">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Service Worker 介绍
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-08-21</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>5 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>1.4k words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h2 id="简介">简介</h2>
+<p>Service Worker 是⼀个注册在指定源和路径下的事件驱动 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Worker">Worker</a>。它采⽤ JavaScript ⽂件的形式，控制关联的⻚⾯或者⽹站，拦截并修改访问和资源请求，细粒度地缓存资源。你可以完全控制应⽤在特定情形（最常⻅的情形是⽹络不可⽤）下的表现。</p>
+<p><strong>作用</strong></p>
+<ol>
+<li class="lvl-3">
+<p>离线访问:</p>
+</li>
+</ol>
+<p>Service Worker 可以缓存静态资源（如 HTML, CSS, JavaScript 文件）和其他资源（如图片和字体），即使用户处于离线状态也能访问这些资源。</p>
+<p>用户可以在没有网络连接的情况下访问网站的部分内容或功能。</p>
+<ol start="2">
+<li class="lvl-3">
+<p>拦截网络请求:</p>
+</li>
+</ol>
+<p>Service Worker 允许开发者拦截并控制页面发起的所有网络请求。</p>
+<p>这意味着可以决定是从网络获取资源还是从缓存中读取，甚至可以修改请求或响应。</p>
+<ol start="3">
+<li class="lvl-3">
+<p>背景同步:</p>
+</li>
+</ol>
+<p>当设备重新获得网络连接时，Service Worker 可以自动执行之前未能完成的操作，例如发送消息或同步数据到服务器。</p>
+<ol start="4">
+<li class="lvl-3">
+<p>推送通知:</p>
+</li>
+</ol>
+<p>即使用户不在使用网站时，Service Worker 也可以接收推送消息并显示通知给用户。</p>
+<ol start="5">
+<li class="lvl-3">
+<p>策略控制:</p>
+</li>
+</ol>
+<p>开发者可以通过 Service Worker 实现复杂的缓存更新策略，例如只在有新版本可用时才更新缓存。</p>
+<ol start="6">
+<li class="lvl-3">
+<p>性能优化:</p>
+</li>
+</ol>
+<p>通过预加载和缓存关键资源，减少网络延迟，提高加载速度。</p>
+<p><strong>特点</strong></p>
+<ol>
+<li class="lvl-3">
+<p>运行在 Worker 上下文中，因此它无法访问 DOM。</p>
+</li>
+<li class="lvl-3">
+<p>拥有独立的线程，不会阻塞页面主线程执行。</p>
+</li>
+<li class="lvl-3">
+<p>Service Worker 只能由 HTTPS 承载。</p>
+</li>
+<li class="lvl-3">
+<p>拥有独立的生命周期</p>
+</li>
+</ol>
+<blockquote>
+<p>Service Worker ⼤量使⽤ Promise，因为通常它们会等待响应后继续，并根据响应返回⼀个成功或者失败的操作。Promise ⾮常适合这种场景。</p>
+</blockquote>
+<h2 id="生命周期">生命周期</h2>
+<p>主要包含以下生命周期：注册、下载、安装、激活。</p>
+<h3 id="页面首次加载时">页面首次加载时</h3>
+<p><img src="/../imgs/service-worker/image1.png" alt="图片"></p>
+<h3 id="进入页面，缓存的资源有变化时">进入页面，缓存的资源有变化时</h3>
+<p><img src="/../imgs/service-worker/image2.png" alt="图片"></p>
+<h2 id="代码事例">代码事例</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 业务代码中注册 Service Worker</span></span><br><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;serviceWorker&#x27;</span> <span class="keyword">in</span> navigator) &#123;</span><br><span class="line">  <span class="comment">// 防⽌阻塞资源加载，放在 onload 事件中注册</span></span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 注册 Service Worker，指定要加载的 JS</span></span><br><span class="line">    navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;/xxxx/service-worker.js&#x27;</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;&#125;)</span><br><span class="line">    .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123; <span class="variable language_">console</span>.<span class="title function_">error</span>(err) &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// service-worker.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要缓存的资源路径</span></span><br><span class="line"><span class="keyword">const</span> preCatchUrl = [</span><br><span class="line">  <span class="string">&#x27;https://test.com/xxxx/xxxx.js&#x27;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存资源存储的 key</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">CACHE_KEY</span> = <span class="string">&#x27;test-key&#x27;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// 安装事件</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 等待传⼊的函数执⾏完成</span></span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    <span class="comment">// 打开⼀个缓存</span></span><br><span class="line">    caches.<span class="title function_">open</span>(<span class="variable constant_">CACHE_KEY</span> ).<span class="title function_">then</span>(<span class="function"><span class="params">cache</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;CACHE_KEY&#125;</span> open`</span>)</span><br><span class="line">      <span class="comment">// 将传⼊的资源预加载</span></span><br><span class="line">      <span class="keyword">return</span> cache.<span class="title function_">addAll</span>(preCatchUrl).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;addAll done&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;),</span><br><span class="line">  )</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Service Worker install&#x27;</span>)</span><br><span class="line">  <span class="comment">// 跳过等待，⽴即触发 activate 事件</span></span><br><span class="line">  self.<span class="title function_">skipWaiting</span>()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 激活事件，通常会在这⾥清楚掉旧缓存</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Service Worker activate&#x27;</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;update 1&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否是预加载的资源</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isPreCacheUrl</span>(<span class="params">url</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> preCatchUrl.<span class="title function_">includes</span>(url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听⻚⾯内所有的请求</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;fetch&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line"><span class="comment">// 匹配是否是预加载的资源</span></span><br><span class="line">  <span class="keyword">const</span> url = event.<span class="property">request</span>.<span class="property">url</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isPreCacheUrl</span>(url)) &#123;</span><br><span class="line">    event.<span class="title function_">respondWith</span>(</span><br><span class="line">      caches.<span class="title function_">open</span>(<span class="variable constant_">CACHE_KEY</span>).<span class="title function_">then</span>(<span class="function"><span class="params">cache</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> cache.<span class="title function_">match</span>(event.<span class="property">request</span>).<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 如果缓存中存在匹配的响应，则直接返回缓存的响应</span></span><br><span class="line">        <span class="keyword">if</span> (response) &#123;</span><br><span class="line">          <span class="keyword">return</span> response</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 否则，发起⽹络请求并将响应存⼊缓存</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">fetch</span>(event.<span class="property">request</span>).<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="comment">// 克隆响应对象</span></span><br><span class="line">          <span class="keyword">const</span> clonedResponse = response.<span class="title function_">clone</span>()</span><br><span class="line">          <span class="comment">// 将响应存⼊缓存</span></span><br><span class="line">          <span class="keyword">return</span> cache.<span class="title function_">put</span>(event.<span class="property">request</span>, clonedResponse)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function">() =&gt;</span> response)</span><br><span class="line">            .<span class="title function_">catch</span>(<span class="function">() =&gt;</span> response)</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="几种控制缓存的策略">几种控制缓存的策略</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">策略名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">缓存优先（CacheFirst）</td>
+<td style="text-align:center">缓存优先，如果有缓存使⽤缓存，没有缓存⾛⽹络请求</td>
+</tr>
+<tr>
+<td style="text-align:center">仅使⽤缓存（CacheOnly）</td>
+<td style="text-align:center">只使⽤缓存结果，如果没有缓存，返回资源请求失败的结果</td>
+</tr>
+<tr>
+<td style="text-align:center">⽹络请求优先（NetworkFirst）</td>
+<td style="text-align:center">⽹络请求返回成功时，使⽤⽹络请求结果，⽹络请求失败时，返回缓存的</td>
+</tr>
+<tr>
+<td style="text-align:center">仅使⽤⽹络请求（NetworkOnly）</td>
+<td style="text-align:center">只使⽤⽹络请求返回的结果</td>
+</tr>
+<tr>
+<td style="text-align:center">动态缓存（StaleWhileRevalidate）</td>
+<td style="text-align:center">如果没有缓存，返回⽹络请求结果。<br>如果有缓存，返回缓存结果，并且使⽤⽹络请求结果更新缓存。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Workbox">Workbox</h2>
+<p>Workbox 是⼀个由 Google 开发的⽤于简化构建离线优先的 Web 应⽤程序的⼯具库</p>
+<p><code>precacheAndRoute</code> 预缓存并且在请求命中缓存时，返回缓存的内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">workbox.<span class="title function_">precacheAndRoute</span>([&#123;</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&quot;//xxxx.com/xxxx.png&quot;</span></span><br><span class="line">  <span class="attr">revision</span>: <span class="literal">null</span></span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure>
+<p><code>registerRoute</code> 注册路由，当请求命中路由时，返回响应</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">workbox.<span class="title function_">registerRoute</span>(<span class="function">(<span class="params">&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">  url</span></span></span><br><span class="line"><span class="params"><span class="function">&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> href = url.<span class="property">href</span></span><br><span class="line">  <span class="keyword">return</span> href.<span class="title function_">includes</span>(<span class="string">&#x27;/assets/img/&#x27;</span>)</span><br><span class="line">&#125;, <span class="keyword">new</span> workbox.<span class="title class_">CacheFirst</span>(&#123;</span><br><span class="line">  <span class="attr">cacheName</span>: <span class="string">&#x27;image-cache&#x27;</span>,</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> workbox.<span class="title class_">ExpirationPlugin</span>(&#123;</span><br><span class="line">  <span class="attr">maxEntries</span>: <span class="number">50</span></span><br><span class="line"> &#125;)]</span><br><span class="line">&#125;), <span class="string">&#x27;GET&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="workbox-webpack-plugin">workbox-webpack-plugin</h2>
+<p>可以⾃动将打包⽣成的资源⽂件⽣成⼀个 <code>service-worker.js</code> ⽂件，并且调⽤ <code>Workbox</code> ⽅法进行缓存</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">GenerateSW</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;workbox-webpack-plugin&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 排除 html 资源，防止缓存 html。</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">excludeHtmlFile</span>(<span class="params">manifestEntries</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> manifest = manifestEntries.<span class="title function_">filter</span>(<span class="function"><span class="params">entry</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> !entry.<span class="property">url</span>.<span class="title function_">endsWith</span>(<span class="string">&#x27;.html&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> &#123; manifest, <span class="attr">warnings</span>: [] &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// webpack plugins 中添加</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">GenerateSW</span>(&#123;</span><br><span class="line">  <span class="attr">clientsClaim</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">skipWaiting</span>: <span class="literal">true</span>, <span class="comment">// 安装完成⽴即激活</span></span><br><span class="line">  <span class="attr">manifestTransforms</span>: [excludeHtmlFile],</span><br><span class="line">  <span class="attr">ignoreURLParametersMatching</span>: [<span class="regexp">/.*/</span>], <span class="comment">// 匹配precache时，忽所有url参数</span></span><br><span class="line">  <span class="comment">// 运行时拦截请求进行资源缓存</span></span><br><span class="line">  <span class="attr">runtimeCaching</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">urlPattern</span>: <span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> href = url.<span class="property">href</span></span><br><span class="line">        <span class="comment">// 如果页面运行时加载了图片资源，将图片缓存</span></span><br><span class="line">        <span class="keyword">return</span> href.<span class="title function_">includes</span>(<span class="string">&#x27;/assets/img/&#x27;</span>)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 缓存策略</span></span><br><span class="line">      <span class="attr">handler</span>: <span class="string">&#x27;CacheFirst&#x27;</span>,</span><br><span class="line">      <span class="attr">options</span>: &#123;</span><br><span class="line">        <span class="attr">cacheName</span>: <span class="string">&#x27;image-cache&#x27;</span>,</span><br><span class="line">        <span class="attr">expiration</span>: &#123;</span><br><span class="line">          <span class="comment">// 最大缓存数量</span></span><br><span class="line">          <span class="attr">maxEntries</span>: <span class="number">50</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/08/19/next-js-learn/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/06/09/useStore/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          React Context + React Hooks + reducer 实现全局状态管理
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "dark",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>

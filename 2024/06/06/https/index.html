@@ -226,7 +226,7 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-08-21</time>
+            <time>2024-08-22</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
@@ -253,14 +253,14 @@
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
     <h2 id="初始通信">初始通信</h2>
 <p>假设我们在互联网的通信就像使用信鸽通信一样，信息由信鸽发送，信鸽收到信息后，将信息发送到信鸽接收者手中。</p>
-<p><img src="/../imgs/https/image1.png" alt="图片"></p>
+<p><img src="/imgs/https/image1.png" alt="图片"></p>
 <p>就像上面这张图片一样，信息由信鸽发送，信鸽收到信息后，将信息发送到信鸽接收者手中。</p>
 <p>HTTP 的工作方式也是如此，信息通过明文传输。</p>
 <p>这种工作方式就很容易导致信息泄露，或者信息被串改。</p>
-<p><img src="/../imgs/https/image2.png" alt="图片"></p>
+<p><img src="/imgs/https/image2.png" alt="图片"></p>
 <h2 id="简易加密">简易加密</h2>
 <p>既然明文传输会导致信息泄露，那么我们可以尝试使用加密的方式来保护信息。例如，传输的信息，每个字母向右移动一位。hello -&gt; ifmmp。</p>
-<p><img src="/../imgs/https/image3.png" alt="图片"></p>
+<p><img src="/imgs/https/image3.png" alt="图片"></p>
 <p>这种工作方式就可以解决信息泄露的问题。但是这个工作的方式的前提是，双方必须提前约定加密解密方式，如果双方是没有见过面d的，那么双方就无法确定加密解密方式。</p>
 <blockquote>
 <p>双方使用同一个密钥进行加密解密，也叫对称解密。</p>
@@ -271,19 +271,19 @@
 <p>通信开始时，先发送一只不带信息的鸽子给接受者。</p>
 </li>
 </ol>
-<p><img src="/../imgs/https/image4.png" alt="图片"></p>
+<p><img src="/imgs/https/image4.png" alt="图片"></p>
 <ol start="2">
 <li class="lvl-3">
 <p>接受者有一个带锁的箱子和箱子的钥匙，然后将没有锁上的箱子发送给发送者。</p>
 </li>
 </ol>
-<p><img src="/../imgs/https/image5.png" alt="图片"></p>
+<p><img src="/imgs/https/image5.png" alt="图片"></p>
 <ol start="3">
 <li class="lvl-3">
 <p>发送者收到没有锁上的箱子后，将信息放入箱子中，并且给箱子上锁，发送给接受者，接受者接收到箱子后，就可以通过自己的钥匙打开，读取里面的信息。</p>
 </li>
 </ol>
-<p><img src="/../imgs/https/image6.png" alt="图片"></p>
+<p><img src="/imgs/https/image6.png" alt="图片"></p>
 <blockquote>
 <p>这种加密方式也叫非对称加密，在技术术语中，箱子被称为公钥，打开它的钥匙被称为私钥。</p>
 </blockquote>

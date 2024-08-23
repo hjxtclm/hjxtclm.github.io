@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="hjx">
+
+
+  <meta name="subtitle" content="好好工作，热爱生活">
+
+
+
+
+<title>构建属于自己的 React -- 并发模式 &amp; Fiber | hjx</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+    $("#toggle-dark").click(toggleDark);
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="hjx" />
+          hjx
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        构建属于自己的 React -- 并发模式 & Fiber
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/hjxtclm">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        构建属于自己的 React -- 并发模式 & Fiber
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-08-23</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>5 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>1.3k words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <p>在上一篇文章中，<code>createElement</code> 函数内部通过递归创建元素树，然后渲染到页面上，这样会存在一个问题，一旦开始渲染，就不会停止，直到渲染完整个元素树。如果元素树非常大，就会阻塞页面主线程。</p>
+<p>所以我们需要把任务拆分成多个小任务，每个任务单独执行，如果遇到更高优先级的事情，例如用户输入等，任务可以中断执行，等到浏览器空闲时继续执行。</p>
+<h2 id="requestIdleCallback">requestIdleCallback</h2>
+<p><code>requestIdleCallback</code> 是一个浏览器 API，用于在浏览器空闲时执行回调函数。</p>
+<p><strong>参数</strong>：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>callback</code>：一个回调函数，会在浏览器空闲时执行。</p>
+</li>
+</ul>
+<p>我们使用 <code>requestIdleCallback</code> 来实现浏览器空闲时执行任务的功能。</p>
+<blockquote>
+<p>React 源码中使用的是 <code>Scheduler</code> 调度器，概念上和 <code>requestIdleCallback</code> 类似的。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局变量，保存下一个要执行的任务单元</span></span><br><span class="line"><span class="keyword">let</span> nextUnitOfWork = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">workLoop</span>(<span class="params">deadline</span>) &#123;</span><br><span class="line">  <span class="keyword">while</span> (nextUnitOfWork &amp;&amp; deadline.<span class="title function_">timeRemaining</span>() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 浏览器空闲时间，执行任务，并且获取到下一个需要执行的任务单元</span></span><br><span class="line">    nextUnitOfWork = <span class="title function_">performUnitOfWork</span>(nextUnitOfWork)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 无限循环，如果浏览器空闲，并且有任务，就执行任务</span></span><br><span class="line">  <span class="title function_">requestIdleCallback</span>(workLoop)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动任务循环</span></span><br><span class="line"><span class="title function_">requestIdleCallback</span>(workLoop)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 执行任务单元，并且返回下一个任务单元</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">performUnitOfWork</span>(<span class="params">nextUnitOfWork</span>) &#123;</span><br><span class="line">  <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面的代码，就可以实现在浏览器空闲时，执行 <code>nextUnitOfWork</code> 保存的任务单元，并且通过 <code>performUnitOfWork</code> 方法获取到下一个任务单元，同样保存到 <code>nextUnitOfWork</code> 变量中。</p>
+<h2 id="Fiber">Fiber</h2>
+<p>有了执行任务单元的代码后，我们还需要将之前的递归代码拆分成一个一个可执行的任务单元队列，这样就可以一个一个任务执行了。</p>
+<p>React 中组织单元采用了一种叫做 <strong>Fiber 树</strong> 的数据结构，每个元素都对应一个 Fiber 节点，<strong>每个 Fiber 节点就是一个任务单元</strong>，并且 Fiber 节点保存了对父节点以及兄弟节点的引用。</p>
+<p>对应结构如下图所示</p>
+<p><img src="/imgs/build-your-own-react/dom-fiber.png" alt="DOM-Fiber"></p>
+<h2 id="performUnitOfWork">performUnitOfWork</h2>
+<p>有了执行任务单元的代码，并且定义了任务单元 Fiber 后，我们需要对之前的代码改造。</p>
+<p>在 <code>render</code> 方法中，我们需要创建一个初始任务单元，也就是 root Fiber 节点，并且将其保存到 <code>nextUnitOfWork</code> 变量中。</p>
+<p>有了初始任务后，会通过 <code>performUnitOfWork</code> 方法来执行任务。</p>
+<p><code>performUnitOfWork</code> 方法会做三件事：</p>
+<ol>
+<li class="lvl-3">
+<p>为元素创建 DOM 节点</p>
+</li>
+<li class="lvl-3">
+<p>为元素的子元素创建 Fiber 节点</p>
+</li>
+<li class="lvl-3">
+<p>返回下一个任务单元</p>
+</li>
+</ol>
+<p>返回下一个任务单元的寻找的逻辑是：</p>
+<ol>
+<li class="lvl-3">
+<p>如果当前 Fiber 节点有子节点，返回第一个子节点。</p>
+</li>
+<li class="lvl-3">
+<p>如果当前 Fiber 节点没有子节点，但是有兄弟节点，返回兄弟节点。</p>
+</li>
+<li class="lvl-3">
+<p>如果当前 Fiber 节点没有子节点，也没有兄弟节点，返回父节点的兄弟节点。</p>
+</li>
+</ol>
+<p>对应上面的 Fiber Tree 中，任务单元的返回顺序是：<code>div -&gt; h1 -&gt; p -&gt; a -&gt; h2</code></p>
+<p>接下来进行代码改造：</p>
+<p>首先我们先把 render 函数中创建 DOM 节点的代码拆分出来，并且在 render 函数中创建初始任务 Root Fiber 节点。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createDom</span>(<span class="params">fiber</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> dom =</span><br><span class="line">    fiber.<span class="property">type</span> === <span class="string">&#x27;TEXT_ELEMENT&#x27;</span></span><br><span class="line">      ? <span class="variable language_">document</span>.<span class="title function_">createTextNode</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">      : <span class="variable language_">document</span>.<span class="title function_">createElement</span>(fiber.<span class="property">type</span>)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">isProperty</span> = key =&gt; key !== <span class="string">&#x27;children&#x27;</span></span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">keys</span>(fiber.<span class="property">props</span>)</span><br><span class="line">    .<span class="title function_">filter</span>(isProperty)</span><br><span class="line">    .<span class="title function_">forEach</span>(<span class="function"><span class="params">name</span> =&gt;</span> &#123;</span><br><span class="line">      dom[name] = fiber.<span class="property">props</span>[name]</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> dom</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">render</span>(<span class="params">element, container</span>) &#123;</span><br><span class="line">  <span class="comment">// 设置 nextUnitOfWork</span></span><br><span class="line">  nextUnitOfWork = &#123;</span><br><span class="line">    <span class="attr">dom</span>: container,</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      <span class="attr">children</span>: [element],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样当浏览器空闲时，就会调用 <code>performUnitOfWork</code> 方法，处理当前的 <code>nextUnitOfWork</code> 任务单元。</p>
+<p>接下来实现 <code>performUnitOfWork</code> 方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">performUnitOfWork</span>(<span class="params">fiber</span>) &#123;</span><br><span class="line">  <span class="comment">// fiber 节点上没有 DOM 节点，创建 DOM 节点</span></span><br><span class="line">  <span class="keyword">if</span> (!fiber.<span class="property">dom</span>) &#123;</span><br><span class="line">    fiber.<span class="property">dom</span> = <span class="title function_">createDom</span>(fiber)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (fiber.<span class="property">parent</span>) &#123;</span><br><span class="line">    fiber.<span class="property">parent</span>.<span class="property">dom</span>.<span class="title function_">appendChild</span>(fiber.<span class="property">dom</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 为每个子节点创建 fiber，通过这一段代码，就可以创建 fiber 树</span></span><br><span class="line">  <span class="comment">// 结构就是上面图片中显示的结构</span></span><br><span class="line">  <span class="keyword">const</span> elements = fiber.<span class="property">props</span>.<span class="property">children</span></span><br><span class="line">  <span class="keyword">let</span> index = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> prevSibling = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (index &lt; elements.<span class="property">length</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> element = elements[index]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> newFiber = &#123;</span><br><span class="line">      <span class="attr">type</span>: element.<span class="property">type</span>,</span><br><span class="line">      <span class="attr">props</span>: element.<span class="property">props</span>,</span><br><span class="line">      <span class="attr">parent</span>: fiber,</span><br><span class="line">      <span class="attr">dom</span>: <span class="literal">null</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将新建的 fiber 添加到 fiber 树中</span></span><br><span class="line">    <span class="keyword">if</span> (index === <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="comment">// 第一个子节点</span></span><br><span class="line">      fiber.<span class="property">child</span> = newFiber</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 后续子节点，都是上一个子节点的兄弟节点</span></span><br><span class="line">      prevSibling.<span class="property">sibling</span> = newFiber</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回下一个任务单元</span></span><br><span class="line">  <span class="keyword">if</span> (fiber.<span class="property">child</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> fiber.<span class="property">child</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> nextFiber = fiber</span><br><span class="line">  <span class="keyword">while</span> (nextFiber) &#123;</span><br><span class="line">    <span class="keyword">if</span> (nextFiber.<span class="property">sibling</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> nextFiber.<span class="property">sibling</span></span><br><span class="line">    &#125;</span><br><span class="line">    nextFiber = nextFiber.<span class="property">parent</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<p>在这一节中，我们通过一个无限循环调用 <code>requestIdleCallback</code> 的方式，实现了在浏览器空闲时执行任务。</p>
+<p>定义了 Fiber 树的数据类型，将 Fiber 树中的每一个 Fiber 节点都当作是一个任务单元。</p>
+<p>在 <code>render</code> 方法中，我们定义了一个 Root Fiber 节点，将他作为第一个任务单元。</p>
+<p>有了任务单元后，浏览器就会在空闲时，通过 <code>performUnitOfWork</code> 方法，执行任务。</p>
+<p><code>performUnitOfWork</code> 方法中，主要功能就是将传入的 fiber 节点的所有子节点生成 fiber 节点，并且将这些 fiber 节点添加到 fiber 树中。</p>
+<p>最后通过一定的查找规则，返回下一个 fiber 节点作为下一个任务单元执行。</p>
+<p><img src="/imgs/build-your-own-react/dom-fiber-2.png" alt="dom-fiber"></p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">知识整理</a>
+        </span>
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/React/">React</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/08/19/next-js-learn/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/06/10/build-your-own-react/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          构建属于自己的 React -- createElement & render
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "dark",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
